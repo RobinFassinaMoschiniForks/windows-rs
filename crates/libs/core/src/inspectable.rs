@@ -8,7 +8,7 @@ use core::ptr::null_mut;
 /// [IInspectable](https://docs.microsoft.com/en-us/windows/win32/api/inspectable/nn-inspectable-iinspectable)
 /// interface.
 #[repr(transparent)]
-#[derive(Clone, PartialEq, Eq)]
+#[derive(Clone, PartialEq, Eq, Debug)]
 pub struct IInspectable(pub IUnknown);
 
 interface_hierarchy!(IInspectable, IUnknown);
@@ -37,8 +37,13 @@ impl IInspectable {
 #[repr(C)]
 pub struct IInspectable_Vtbl {
     pub base: IUnknown_Vtbl,
-    pub GetIids: unsafe extern "system" fn(this: *mut c_void, count: *mut u32, values: *mut *mut GUID) -> HRESULT,
-    pub GetRuntimeClassName: unsafe extern "system" fn(this: *mut c_void, value: *mut *mut c_void) -> HRESULT,
+    pub GetIids: unsafe extern "system" fn(
+        this: *mut c_void,
+        count: *mut u32,
+        values: *mut *mut GUID,
+    ) -> HRESULT,
+    pub GetRuntimeClassName:
+        unsafe extern "system" fn(this: *mut c_void, value: *mut *mut c_void) -> HRESULT,
     pub GetTrustLevel: unsafe extern "system" fn(this: *mut c_void, value: *mut i32) -> HRESULT,
 }
 
@@ -55,7 +60,14 @@ impl RuntimeName for IInspectable {}
 
 impl IInspectable_Vtbl {
     pub const fn new<Identity: IUnknownImpl, Name: RuntimeName, const OFFSET: isize>() -> Self {
-        unsafe extern "system" fn GetIids(_: *mut c_void, count: *mut u32, values: *mut *mut GUID) -> HRESULT {
+        unsafe extern "system" fn GetIids(
+            _: *mut c_void,
+            count: *mut u32,
+            values: *mut *mut GUID,
+        ) -> HRESULT {
+            if count.is_null() || values.is_null() {
+                return imp::E_POINTER;
+            }
             // Note: even if we end up implementing this in future, it still doesn't need a this pointer
             // since the data to be returned is type- not instance-specific so can be shared for all
             // interfaces.
@@ -63,12 +75,24 @@ impl IInspectable_Vtbl {
             *values = null_mut();
             HRESULT(0)
         }
-        unsafe extern "system" fn GetRuntimeClassName<T: RuntimeName>(_: *mut c_void, value: *mut *mut c_void) -> HRESULT {
+        unsafe extern "system" fn GetRuntimeClassName<T: RuntimeName>(
+            _: *mut c_void,
+            value: *mut *mut c_void,
+        ) -> HRESULT {
+            if value.is_null() {
+                return imp::E_POINTER;
+            }
             let h: HSTRING = T::NAME.into(); // TODO: should be try_into
             *value = transmute::<HSTRING, *mut c_void>(h);
             HRESULT(0)
         }
-        unsafe extern "system" fn GetTrustLevel<T: IUnknownImpl, const OFFSET: isize>(this: *mut c_void, value: *mut i32) -> HRESULT {
+        unsafe extern "system" fn GetTrustLevel<T: IUnknownImpl, const OFFSET: isize>(
+            this: *mut c_void,
+            value: *mut i32,
+        ) -> HRESULT {
+            if value.is_null() {
+                return imp::E_POINTER;
+            }
             let this = (this as *mut *mut c_void).offset(OFFSET) as *mut T;
             (*this).GetTrustLevel(value)
         }
@@ -78,81 +102,5 @@ impl IInspectable_Vtbl {
             GetRuntimeClassName: GetRuntimeClassName::<Name>,
             GetTrustLevel: GetTrustLevel::<Identity, OFFSET>,
         }
-    }
-}
-
-impl core::fmt::Debug for IInspectable {
-    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
-        // Attempts to retrieve the string representation of the object via the
-        // IStringable interface. If that fails, it will use the canonical type
-        // name to give some idea of what the object represents.
-        let name = <Self as Interface>::cast::<imp::IStringable>(self).and_then(|s| s.ToString()).or_else(|_| self.GetRuntimeClassName()).unwrap_or_default();
-        write!(f, "\"{}\"", name)
-    }
-}
-
-macro_rules! primitive_boxed_type {
-    ($(($t:ty, $m:ident)),+) => {
-        $(impl TryFrom<$t> for IInspectable {
-            type Error = Error;
-            fn try_from(value: $t) -> Result<Self> {
-                imp::PropertyValue::$m(value)
-            }
-        }
-        impl TryFrom<IInspectable> for $t {
-            type Error = Error;
-            fn try_from(value: IInspectable) -> Result<Self> {
-                <IInspectable as Interface>::cast::<imp::IReference<$t>>(&value)?.Value()
-            }
-        }
-        impl TryFrom<&IInspectable> for $t {
-            type Error = Error;
-            fn try_from(value: &IInspectable) -> Result<Self> {
-                <IInspectable as Interface>::cast::<imp::IReference<$t>>(value)?.Value()
-            }
-        })*
-    };
-}
-primitive_boxed_type! {
-    (bool, CreateBoolean),
-    (u8, CreateUInt8),
-    (i16, CreateInt16),
-    (u16, CreateUInt16),
-    (i32, CreateInt32),
-    (u32, CreateUInt32),
-    (i64, CreateInt64),
-    (u64, CreateUInt64),
-    (f32, CreateSingle),
-    (f64, CreateDouble)
-}
-impl TryFrom<&str> for IInspectable {
-    type Error = Error;
-    fn try_from(value: &str) -> Result<Self> {
-        let value: HSTRING = value.into();
-        imp::PropertyValue::CreateString(&value)
-    }
-}
-impl TryFrom<HSTRING> for IInspectable {
-    type Error = Error;
-    fn try_from(value: HSTRING) -> Result<Self> {
-        imp::PropertyValue::CreateString(&value)
-    }
-}
-impl TryFrom<&HSTRING> for IInspectable {
-    type Error = Error;
-    fn try_from(value: &HSTRING) -> Result<Self> {
-        imp::PropertyValue::CreateString(value)
-    }
-}
-impl TryFrom<IInspectable> for HSTRING {
-    type Error = Error;
-    fn try_from(value: IInspectable) -> Result<Self> {
-        <IInspectable as Interface>::cast::<imp::IReference<HSTRING>>(&value)?.Value()
-    }
-}
-impl TryFrom<&IInspectable> for HSTRING {
-    type Error = Error;
-    fn try_from(value: &IInspectable) -> Result<Self> {
-        <IInspectable as Interface>::cast::<imp::IReference<HSTRING>>(value)?.Value()
     }
 }

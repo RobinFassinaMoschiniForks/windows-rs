@@ -540,6 +540,19 @@ pub struct ICompassStatics2_Vtbl {
     pub GetDeviceSelector: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::mem::MaybeUninit<windows_core::HSTRING>) -> windows_core::HRESULT,
     pub FromIdAsync: unsafe extern "system" fn(*mut core::ffi::c_void, core::mem::MaybeUninit<windows_core::HSTRING>, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
+windows_core::imp::define_interface!(IDetectedPerson, IDetectedPerson_Vtbl, 0x168cc0d9_3f05_5029_a0bf_cdcab4be3f9e);
+impl windows_core::RuntimeType for IDetectedPerson {
+    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
+}
+#[repr(C)]
+pub struct IDetectedPerson_Vtbl {
+    pub base__: windows_core::IInspectable_Vtbl,
+    pub Engagement: unsafe extern "system" fn(*mut core::ffi::c_void, *mut HumanEngagement) -> windows_core::HRESULT,
+    pub DistanceInMillimeters: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
+    pub HeadOrientation: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
+    pub HeadPosition: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
+    pub PersonId: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
+}
 windows_core::imp::define_interface!(IGyrometer, IGyrometer_Vtbl, 0xfdb9a9c4_84b1_4ca2_9763_9b589506c70c);
 impl windows_core::RuntimeType for IGyrometer {
     const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
@@ -666,6 +679,27 @@ pub struct IGyrometerStatics2_Vtbl {
     pub GetDeviceSelector: unsafe extern "system" fn(*mut core::ffi::c_void, *mut core::mem::MaybeUninit<windows_core::HSTRING>) -> windows_core::HRESULT,
     pub FromIdAsync: unsafe extern "system" fn(*mut core::ffi::c_void, core::mem::MaybeUninit<windows_core::HSTRING>, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
 }
+windows_core::imp::define_interface!(IHeadOrientation, IHeadOrientation_Vtbl, 0x519f54a9_513e_55e8_9c35_3e8da21dee69);
+impl windows_core::RuntimeType for IHeadOrientation {
+    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
+}
+#[repr(C)]
+pub struct IHeadOrientation_Vtbl {
+    pub base__: windows_core::IInspectable_Vtbl,
+    pub RollInDegrees: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
+    pub PitchInDegrees: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
+    pub YawInDegrees: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
+}
+windows_core::imp::define_interface!(IHeadPosition, IHeadPosition_Vtbl, 0x585aeb65_cf35_5e6d_a76a_37db131e17de);
+impl windows_core::RuntimeType for IHeadPosition {
+    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
+}
+#[repr(C)]
+pub struct IHeadPosition_Vtbl {
+    pub base__: windows_core::IInspectable_Vtbl,
+    pub AzimuthInDegrees: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
+    pub AltitudeInDegrees: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
+}
 windows_core::imp::define_interface!(IHingeAngleReading, IHingeAngleReading_Vtbl, 0xa3cd45b9_1bf1_4f65_a704_e2da04f182c0);
 impl windows_core::RuntimeType for IHingeAngleReading {
     const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
@@ -768,6 +802,19 @@ pub struct IHumanPresenceSensor2_Vtbl {
     pub IsPresenceSupported: unsafe extern "system" fn(*mut core::ffi::c_void, *mut bool) -> windows_core::HRESULT,
     pub IsEngagementSupported: unsafe extern "system" fn(*mut core::ffi::c_void, *mut bool) -> windows_core::HRESULT,
 }
+windows_core::imp::define_interface!(IHumanPresenceSensor3, IHumanPresenceSensor3_Vtbl, 0x963f006d_090d_532c_9eaf_803a9f69285b);
+impl windows_core::RuntimeType for IHumanPresenceSensor3 {
+    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
+}
+#[repr(C)]
+pub struct IHumanPresenceSensor3_Vtbl {
+    pub base__: windows_core::IInspectable_Vtbl,
+    pub MaxDetectablePersons: unsafe extern "system" fn(*mut core::ffi::c_void, *mut i32) -> windows_core::HRESULT,
+    pub MinDetectableAzimuthInDegrees: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
+    pub MaxDetectableAzimuthInDegrees: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
+    pub MinDetectableAltitudeInDegrees: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
+    pub MaxDetectableAltitudeInDegrees: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
+}
 windows_core::imp::define_interface!(IHumanPresenceSensorExtension, IHumanPresenceSensorExtension_Vtbl, 0x3e526a71_2d1d_5d43_8a8e_a434a8242ef0);
 impl core::ops::Deref for IHumanPresenceSensorExtension {
     type Target = windows_core::IInspectable;
@@ -852,6 +899,19 @@ pub struct IHumanPresenceSensorReading2_Vtbl {
     pub Properties: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
     #[cfg(not(feature = "Foundation_Collections"))]
     Properties: usize,
+}
+windows_core::imp::define_interface!(IHumanPresenceSensorReading3, IHumanPresenceSensorReading3_Vtbl, 0xb876d918_f069_586f_90e3_7c6fa5c5d33a);
+impl windows_core::RuntimeType for IHumanPresenceSensorReading3 {
+    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
+}
+#[repr(C)]
+pub struct IHumanPresenceSensorReading3_Vtbl {
+    pub base__: windows_core::IInspectable_Vtbl,
+    pub OnlookerPresence: unsafe extern "system" fn(*mut core::ffi::c_void, *mut HumanPresence) -> windows_core::HRESULT,
+    #[cfg(feature = "Foundation_Collections")]
+    pub DetectedPersons: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
+    #[cfg(not(feature = "Foundation_Collections"))]
+    DetectedPersons: usize,
 }
 windows_core::imp::define_interface!(IHumanPresenceSensorReadingChangedEventArgs, IHumanPresenceSensorReadingChangedEventArgs_Vtbl, 0xa9dc4583_fd69_5c5e_ab1f_942204eae2db);
 impl windows_core::RuntimeType for IHumanPresenceSensorReadingChangedEventArgs {
@@ -1776,7 +1836,7 @@ pub struct IWakeOnApproachOptions_Vtbl {
     pub SetDisableWhenBatterySaverOn: unsafe extern "system" fn(*mut core::ffi::c_void, bool) -> windows_core::HRESULT,
 }
 #[repr(transparent)]
-#[derive(PartialEq, Eq, core::fmt::Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone)]
 pub struct Accelerometer(windows_core::IUnknown);
 windows_core::imp::interface_hierarchy!(Accelerometer, windows_core::IUnknown, windows_core::IInspectable);
 impl Accelerometer {
@@ -1938,7 +1998,7 @@ impl windows_core::RuntimeName for Accelerometer {
 unsafe impl Send for Accelerometer {}
 unsafe impl Sync for Accelerometer {}
 #[repr(transparent)]
-#[derive(PartialEq, Eq, core::fmt::Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone)]
 pub struct AccelerometerDataThreshold(windows_core::IUnknown);
 windows_core::imp::interface_hierarchy!(AccelerometerDataThreshold, windows_core::IUnknown, windows_core::IInspectable);
 impl AccelerometerDataThreshold {
@@ -1989,7 +2049,7 @@ impl windows_core::RuntimeName for AccelerometerDataThreshold {
 unsafe impl Send for AccelerometerDataThreshold {}
 unsafe impl Sync for AccelerometerDataThreshold {}
 #[repr(transparent)]
-#[derive(PartialEq, Eq, core::fmt::Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone)]
 pub struct AccelerometerReading(windows_core::IUnknown);
 windows_core::imp::interface_hierarchy!(AccelerometerReading, windows_core::IUnknown, windows_core::IInspectable);
 impl AccelerometerReading {
@@ -2050,7 +2110,7 @@ impl windows_core::RuntimeName for AccelerometerReading {
 unsafe impl Send for AccelerometerReading {}
 unsafe impl Sync for AccelerometerReading {}
 #[repr(transparent)]
-#[derive(PartialEq, Eq, core::fmt::Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone)]
 pub struct AccelerometerReadingChangedEventArgs(windows_core::IUnknown);
 windows_core::imp::interface_hierarchy!(AccelerometerReadingChangedEventArgs, windows_core::IUnknown, windows_core::IInspectable);
 impl AccelerometerReadingChangedEventArgs {
@@ -2075,7 +2135,7 @@ impl windows_core::RuntimeName for AccelerometerReadingChangedEventArgs {
 unsafe impl Send for AccelerometerReadingChangedEventArgs {}
 unsafe impl Sync for AccelerometerReadingChangedEventArgs {}
 #[repr(transparent)]
-#[derive(PartialEq, Eq, core::fmt::Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone)]
 pub struct AccelerometerShakenEventArgs(windows_core::IUnknown);
 windows_core::imp::interface_hierarchy!(AccelerometerShakenEventArgs, windows_core::IUnknown, windows_core::IInspectable);
 impl AccelerometerShakenEventArgs {
@@ -2100,7 +2160,7 @@ impl windows_core::RuntimeName for AccelerometerShakenEventArgs {
 unsafe impl Send for AccelerometerShakenEventArgs {}
 unsafe impl Sync for AccelerometerShakenEventArgs {}
 #[repr(transparent)]
-#[derive(PartialEq, Eq, core::fmt::Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone)]
 pub struct ActivitySensor(windows_core::IUnknown);
 windows_core::imp::interface_hierarchy!(ActivitySensor, windows_core::IUnknown, windows_core::IInspectable);
 impl ActivitySensor {
@@ -2213,7 +2273,7 @@ impl windows_core::RuntimeName for ActivitySensor {
 unsafe impl Send for ActivitySensor {}
 unsafe impl Sync for ActivitySensor {}
 #[repr(transparent)]
-#[derive(PartialEq, Eq, core::fmt::Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone)]
 pub struct ActivitySensorReading(windows_core::IUnknown);
 windows_core::imp::interface_hierarchy!(ActivitySensorReading, windows_core::IUnknown, windows_core::IInspectable);
 impl ActivitySensorReading {
@@ -2252,7 +2312,7 @@ impl windows_core::RuntimeName for ActivitySensorReading {
 unsafe impl Send for ActivitySensorReading {}
 unsafe impl Sync for ActivitySensorReading {}
 #[repr(transparent)]
-#[derive(PartialEq, Eq, core::fmt::Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone)]
 pub struct ActivitySensorReadingChangeReport(windows_core::IUnknown);
 windows_core::imp::interface_hierarchy!(ActivitySensorReadingChangeReport, windows_core::IUnknown, windows_core::IInspectable);
 impl ActivitySensorReadingChangeReport {
@@ -2277,7 +2337,7 @@ impl windows_core::RuntimeName for ActivitySensorReadingChangeReport {
 unsafe impl Send for ActivitySensorReadingChangeReport {}
 unsafe impl Sync for ActivitySensorReadingChangeReport {}
 #[repr(transparent)]
-#[derive(PartialEq, Eq, core::fmt::Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone)]
 pub struct ActivitySensorReadingChangedEventArgs(windows_core::IUnknown);
 windows_core::imp::interface_hierarchy!(ActivitySensorReadingChangedEventArgs, windows_core::IUnknown, windows_core::IInspectable);
 impl ActivitySensorReadingChangedEventArgs {
@@ -2302,7 +2362,7 @@ impl windows_core::RuntimeName for ActivitySensorReadingChangedEventArgs {
 unsafe impl Send for ActivitySensorReadingChangedEventArgs {}
 unsafe impl Sync for ActivitySensorReadingChangedEventArgs {}
 #[repr(transparent)]
-#[derive(PartialEq, Eq, core::fmt::Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone)]
 pub struct ActivitySensorTriggerDetails(windows_core::IUnknown);
 windows_core::imp::interface_hierarchy!(ActivitySensorTriggerDetails, windows_core::IUnknown, windows_core::IInspectable);
 impl ActivitySensorTriggerDetails {
@@ -2328,7 +2388,7 @@ impl windows_core::RuntimeName for ActivitySensorTriggerDetails {
 unsafe impl Send for ActivitySensorTriggerDetails {}
 unsafe impl Sync for ActivitySensorTriggerDetails {}
 #[repr(transparent)]
-#[derive(PartialEq, Eq, core::fmt::Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone)]
 pub struct AdaptiveDimmingOptions(windows_core::IUnknown);
 windows_core::imp::interface_hierarchy!(AdaptiveDimmingOptions, windows_core::IUnknown, windows_core::IInspectable);
 impl AdaptiveDimmingOptions {
@@ -2357,7 +2417,7 @@ impl windows_core::RuntimeName for AdaptiveDimmingOptions {
 unsafe impl Send for AdaptiveDimmingOptions {}
 unsafe impl Sync for AdaptiveDimmingOptions {}
 #[repr(transparent)]
-#[derive(PartialEq, Eq, core::fmt::Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone)]
 pub struct Altimeter(windows_core::IUnknown);
 windows_core::imp::interface_hierarchy!(Altimeter, windows_core::IUnknown, windows_core::IInspectable);
 impl Altimeter {
@@ -2450,7 +2510,7 @@ impl windows_core::RuntimeName for Altimeter {
 unsafe impl Send for Altimeter {}
 unsafe impl Sync for Altimeter {}
 #[repr(transparent)]
-#[derive(PartialEq, Eq, core::fmt::Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone)]
 pub struct AltimeterReading(windows_core::IUnknown);
 windows_core::imp::interface_hierarchy!(AltimeterReading, windows_core::IUnknown, windows_core::IInspectable);
 impl AltimeterReading {
@@ -2497,7 +2557,7 @@ impl windows_core::RuntimeName for AltimeterReading {
 unsafe impl Send for AltimeterReading {}
 unsafe impl Sync for AltimeterReading {}
 #[repr(transparent)]
-#[derive(PartialEq, Eq, core::fmt::Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone)]
 pub struct AltimeterReadingChangedEventArgs(windows_core::IUnknown);
 windows_core::imp::interface_hierarchy!(AltimeterReadingChangedEventArgs, windows_core::IUnknown, windows_core::IInspectable);
 impl AltimeterReadingChangedEventArgs {
@@ -2522,7 +2582,7 @@ impl windows_core::RuntimeName for AltimeterReadingChangedEventArgs {
 unsafe impl Send for AltimeterReadingChangedEventArgs {}
 unsafe impl Sync for AltimeterReadingChangedEventArgs {}
 #[repr(transparent)]
-#[derive(PartialEq, Eq, core::fmt::Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone)]
 pub struct Barometer(windows_core::IUnknown);
 windows_core::imp::interface_hierarchy!(Barometer, windows_core::IUnknown, windows_core::IInspectable);
 impl Barometer {
@@ -2639,7 +2699,7 @@ impl windows_core::RuntimeName for Barometer {
 unsafe impl Send for Barometer {}
 unsafe impl Sync for Barometer {}
 #[repr(transparent)]
-#[derive(PartialEq, Eq, core::fmt::Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone)]
 pub struct BarometerDataThreshold(windows_core::IUnknown);
 windows_core::imp::interface_hierarchy!(BarometerDataThreshold, windows_core::IUnknown, windows_core::IInspectable);
 impl BarometerDataThreshold {
@@ -2668,7 +2728,7 @@ impl windows_core::RuntimeName for BarometerDataThreshold {
 unsafe impl Send for BarometerDataThreshold {}
 unsafe impl Sync for BarometerDataThreshold {}
 #[repr(transparent)]
-#[derive(PartialEq, Eq, core::fmt::Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone)]
 pub struct BarometerReading(windows_core::IUnknown);
 windows_core::imp::interface_hierarchy!(BarometerReading, windows_core::IUnknown, windows_core::IInspectable);
 impl BarometerReading {
@@ -2715,7 +2775,7 @@ impl windows_core::RuntimeName for BarometerReading {
 unsafe impl Send for BarometerReading {}
 unsafe impl Sync for BarometerReading {}
 #[repr(transparent)]
-#[derive(PartialEq, Eq, core::fmt::Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone)]
 pub struct BarometerReadingChangedEventArgs(windows_core::IUnknown);
 windows_core::imp::interface_hierarchy!(BarometerReadingChangedEventArgs, windows_core::IUnknown, windows_core::IInspectable);
 impl BarometerReadingChangedEventArgs {
@@ -2740,7 +2800,7 @@ impl windows_core::RuntimeName for BarometerReadingChangedEventArgs {
 unsafe impl Send for BarometerReadingChangedEventArgs {}
 unsafe impl Sync for BarometerReadingChangedEventArgs {}
 #[repr(transparent)]
-#[derive(PartialEq, Eq, core::fmt::Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone)]
 pub struct Compass(windows_core::IUnknown);
 windows_core::imp::interface_hierarchy!(Compass, windows_core::IUnknown, windows_core::IInspectable);
 impl Compass {
@@ -2870,7 +2930,7 @@ impl windows_core::RuntimeName for Compass {
 unsafe impl Send for Compass {}
 unsafe impl Sync for Compass {}
 #[repr(transparent)]
-#[derive(PartialEq, Eq, core::fmt::Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone)]
 pub struct CompassDataThreshold(windows_core::IUnknown);
 windows_core::imp::interface_hierarchy!(CompassDataThreshold, windows_core::IUnknown, windows_core::IInspectable);
 impl CompassDataThreshold {
@@ -2899,7 +2959,7 @@ impl windows_core::RuntimeName for CompassDataThreshold {
 unsafe impl Send for CompassDataThreshold {}
 unsafe impl Sync for CompassDataThreshold {}
 #[repr(transparent)]
-#[derive(PartialEq, Eq, core::fmt::Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone)]
 pub struct CompassReading(windows_core::IUnknown);
 windows_core::imp::interface_hierarchy!(CompassReading, windows_core::IUnknown, windows_core::IInspectable);
 impl CompassReading {
@@ -2960,7 +3020,7 @@ impl windows_core::RuntimeName for CompassReading {
 unsafe impl Send for CompassReading {}
 unsafe impl Sync for CompassReading {}
 #[repr(transparent)]
-#[derive(PartialEq, Eq, core::fmt::Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone)]
 pub struct CompassReadingChangedEventArgs(windows_core::IUnknown);
 windows_core::imp::interface_hierarchy!(CompassReadingChangedEventArgs, windows_core::IUnknown, windows_core::IInspectable);
 impl CompassReadingChangedEventArgs {
@@ -2985,7 +3045,60 @@ impl windows_core::RuntimeName for CompassReadingChangedEventArgs {
 unsafe impl Send for CompassReadingChangedEventArgs {}
 unsafe impl Sync for CompassReadingChangedEventArgs {}
 #[repr(transparent)]
-#[derive(PartialEq, Eq, core::fmt::Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone)]
+pub struct DetectedPerson(windows_core::IUnknown);
+windows_core::imp::interface_hierarchy!(DetectedPerson, windows_core::IUnknown, windows_core::IInspectable);
+impl DetectedPerson {
+    pub fn Engagement(&self) -> windows_core::Result<HumanEngagement> {
+        let this = self;
+        unsafe {
+            let mut result__ = core::mem::zeroed();
+            (windows_core::Interface::vtable(this).Engagement)(windows_core::Interface::as_raw(this), &mut result__).map(|| result__)
+        }
+    }
+    pub fn DistanceInMillimeters(&self) -> windows_core::Result<super::super::Foundation::IReference<u32>> {
+        let this = self;
+        unsafe {
+            let mut result__ = core::mem::zeroed();
+            (windows_core::Interface::vtable(this).DistanceInMillimeters)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::Type::from_abi(result__))
+        }
+    }
+    pub fn HeadOrientation(&self) -> windows_core::Result<HeadOrientation> {
+        let this = self;
+        unsafe {
+            let mut result__ = core::mem::zeroed();
+            (windows_core::Interface::vtable(this).HeadOrientation)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::Type::from_abi(result__))
+        }
+    }
+    pub fn HeadPosition(&self) -> windows_core::Result<HeadPosition> {
+        let this = self;
+        unsafe {
+            let mut result__ = core::mem::zeroed();
+            (windows_core::Interface::vtable(this).HeadPosition)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::Type::from_abi(result__))
+        }
+    }
+    pub fn PersonId(&self) -> windows_core::Result<super::super::Foundation::IReference<i32>> {
+        let this = self;
+        unsafe {
+            let mut result__ = core::mem::zeroed();
+            (windows_core::Interface::vtable(this).PersonId)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::Type::from_abi(result__))
+        }
+    }
+}
+impl windows_core::RuntimeType for DetectedPerson {
+    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_class::<Self, IDetectedPerson>();
+}
+unsafe impl windows_core::Interface for DetectedPerson {
+    type Vtable = IDetectedPerson_Vtbl;
+    const IID: windows_core::GUID = <IDetectedPerson as windows_core::Interface>::IID;
+}
+impl windows_core::RuntimeName for DetectedPerson {
+    const NAME: &'static str = "Windows.Devices.Sensors.DetectedPerson";
+}
+unsafe impl Send for DetectedPerson {}
+unsafe impl Sync for DetectedPerson {}
+#[repr(transparent)]
+#[derive(PartialEq, Eq, Debug, Clone)]
 pub struct Gyrometer(windows_core::IUnknown);
 windows_core::imp::interface_hierarchy!(Gyrometer, windows_core::IUnknown, windows_core::IInspectable);
 impl Gyrometer {
@@ -3115,7 +3228,7 @@ impl windows_core::RuntimeName for Gyrometer {
 unsafe impl Send for Gyrometer {}
 unsafe impl Sync for Gyrometer {}
 #[repr(transparent)]
-#[derive(PartialEq, Eq, core::fmt::Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone)]
 pub struct GyrometerDataThreshold(windows_core::IUnknown);
 windows_core::imp::interface_hierarchy!(GyrometerDataThreshold, windows_core::IUnknown, windows_core::IInspectable);
 impl GyrometerDataThreshold {
@@ -3166,7 +3279,7 @@ impl windows_core::RuntimeName for GyrometerDataThreshold {
 unsafe impl Send for GyrometerDataThreshold {}
 unsafe impl Sync for GyrometerDataThreshold {}
 #[repr(transparent)]
-#[derive(PartialEq, Eq, core::fmt::Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone)]
 pub struct GyrometerReading(windows_core::IUnknown);
 windows_core::imp::interface_hierarchy!(GyrometerReading, windows_core::IUnknown, windows_core::IInspectable);
 impl GyrometerReading {
@@ -3227,7 +3340,7 @@ impl windows_core::RuntimeName for GyrometerReading {
 unsafe impl Send for GyrometerReading {}
 unsafe impl Sync for GyrometerReading {}
 #[repr(transparent)]
-#[derive(PartialEq, Eq, core::fmt::Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone)]
 pub struct GyrometerReadingChangedEventArgs(windows_core::IUnknown);
 windows_core::imp::interface_hierarchy!(GyrometerReadingChangedEventArgs, windows_core::IUnknown, windows_core::IInspectable);
 impl GyrometerReadingChangedEventArgs {
@@ -3252,7 +3365,78 @@ impl windows_core::RuntimeName for GyrometerReadingChangedEventArgs {
 unsafe impl Send for GyrometerReadingChangedEventArgs {}
 unsafe impl Sync for GyrometerReadingChangedEventArgs {}
 #[repr(transparent)]
-#[derive(PartialEq, Eq, core::fmt::Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone)]
+pub struct HeadOrientation(windows_core::IUnknown);
+windows_core::imp::interface_hierarchy!(HeadOrientation, windows_core::IUnknown, windows_core::IInspectable);
+impl HeadOrientation {
+    pub fn RollInDegrees(&self) -> windows_core::Result<super::super::Foundation::IReference<f64>> {
+        let this = self;
+        unsafe {
+            let mut result__ = core::mem::zeroed();
+            (windows_core::Interface::vtable(this).RollInDegrees)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::Type::from_abi(result__))
+        }
+    }
+    pub fn PitchInDegrees(&self) -> windows_core::Result<super::super::Foundation::IReference<f64>> {
+        let this = self;
+        unsafe {
+            let mut result__ = core::mem::zeroed();
+            (windows_core::Interface::vtable(this).PitchInDegrees)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::Type::from_abi(result__))
+        }
+    }
+    pub fn YawInDegrees(&self) -> windows_core::Result<super::super::Foundation::IReference<f64>> {
+        let this = self;
+        unsafe {
+            let mut result__ = core::mem::zeroed();
+            (windows_core::Interface::vtable(this).YawInDegrees)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::Type::from_abi(result__))
+        }
+    }
+}
+impl windows_core::RuntimeType for HeadOrientation {
+    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_class::<Self, IHeadOrientation>();
+}
+unsafe impl windows_core::Interface for HeadOrientation {
+    type Vtable = IHeadOrientation_Vtbl;
+    const IID: windows_core::GUID = <IHeadOrientation as windows_core::Interface>::IID;
+}
+impl windows_core::RuntimeName for HeadOrientation {
+    const NAME: &'static str = "Windows.Devices.Sensors.HeadOrientation";
+}
+unsafe impl Send for HeadOrientation {}
+unsafe impl Sync for HeadOrientation {}
+#[repr(transparent)]
+#[derive(PartialEq, Eq, Debug, Clone)]
+pub struct HeadPosition(windows_core::IUnknown);
+windows_core::imp::interface_hierarchy!(HeadPosition, windows_core::IUnknown, windows_core::IInspectable);
+impl HeadPosition {
+    pub fn AzimuthInDegrees(&self) -> windows_core::Result<super::super::Foundation::IReference<f64>> {
+        let this = self;
+        unsafe {
+            let mut result__ = core::mem::zeroed();
+            (windows_core::Interface::vtable(this).AzimuthInDegrees)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::Type::from_abi(result__))
+        }
+    }
+    pub fn AltitudeInDegrees(&self) -> windows_core::Result<super::super::Foundation::IReference<f64>> {
+        let this = self;
+        unsafe {
+            let mut result__ = core::mem::zeroed();
+            (windows_core::Interface::vtable(this).AltitudeInDegrees)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::Type::from_abi(result__))
+        }
+    }
+}
+impl windows_core::RuntimeType for HeadPosition {
+    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_class::<Self, IHeadPosition>();
+}
+unsafe impl windows_core::Interface for HeadPosition {
+    type Vtable = IHeadPosition_Vtbl;
+    const IID: windows_core::GUID = <IHeadPosition as windows_core::Interface>::IID;
+}
+impl windows_core::RuntimeName for HeadPosition {
+    const NAME: &'static str = "Windows.Devices.Sensors.HeadPosition";
+}
+unsafe impl Send for HeadPosition {}
+unsafe impl Sync for HeadPosition {}
+#[repr(transparent)]
+#[derive(PartialEq, Eq, Debug, Clone)]
 pub struct HingeAngleReading(windows_core::IUnknown);
 windows_core::imp::interface_hierarchy!(HingeAngleReading, windows_core::IUnknown, windows_core::IInspectable);
 impl HingeAngleReading {
@@ -3292,7 +3476,7 @@ impl windows_core::RuntimeName for HingeAngleReading {
 unsafe impl Send for HingeAngleReading {}
 unsafe impl Sync for HingeAngleReading {}
 #[repr(transparent)]
-#[derive(PartialEq, Eq, core::fmt::Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone)]
 pub struct HingeAngleSensor(windows_core::IUnknown);
 windows_core::imp::interface_hierarchy!(HingeAngleSensor, windows_core::IUnknown, windows_core::IInspectable);
 impl HingeAngleSensor {
@@ -3385,7 +3569,7 @@ impl windows_core::RuntimeName for HingeAngleSensor {
 unsafe impl Send for HingeAngleSensor {}
 unsafe impl Sync for HingeAngleSensor {}
 #[repr(transparent)]
-#[derive(PartialEq, Eq, core::fmt::Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone)]
 pub struct HingeAngleSensorReadingChangedEventArgs(windows_core::IUnknown);
 windows_core::imp::interface_hierarchy!(HingeAngleSensorReadingChangedEventArgs, windows_core::IUnknown, windows_core::IInspectable);
 impl HingeAngleSensorReadingChangedEventArgs {
@@ -3410,7 +3594,7 @@ impl windows_core::RuntimeName for HingeAngleSensorReadingChangedEventArgs {
 unsafe impl Send for HingeAngleSensorReadingChangedEventArgs {}
 unsafe impl Sync for HingeAngleSensorReadingChangedEventArgs {}
 #[repr(transparent)]
-#[derive(PartialEq, Eq, core::fmt::Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone)]
 pub struct HumanPresenceFeatures(windows_core::IUnknown);
 windows_core::imp::interface_hierarchy!(HumanPresenceFeatures, windows_core::IUnknown, windows_core::IInspectable);
 impl HumanPresenceFeatures {
@@ -3472,7 +3656,7 @@ impl windows_core::RuntimeName for HumanPresenceFeatures {
 unsafe impl Send for HumanPresenceFeatures {}
 unsafe impl Sync for HumanPresenceFeatures {}
 #[repr(transparent)]
-#[derive(PartialEq, Eq, core::fmt::Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone)]
 pub struct HumanPresenceSensor(windows_core::IUnknown);
 windows_core::imp::interface_hierarchy!(HumanPresenceSensor, windows_core::IUnknown, windows_core::IInspectable);
 impl HumanPresenceSensor {
@@ -3532,6 +3716,41 @@ impl HumanPresenceSensor {
             (windows_core::Interface::vtable(this).IsEngagementSupported)(windows_core::Interface::as_raw(this), &mut result__).map(|| result__)
         }
     }
+    pub fn MaxDetectablePersons(&self) -> windows_core::Result<i32> {
+        let this = &windows_core::Interface::cast::<IHumanPresenceSensor3>(self)?;
+        unsafe {
+            let mut result__ = core::mem::zeroed();
+            (windows_core::Interface::vtable(this).MaxDetectablePersons)(windows_core::Interface::as_raw(this), &mut result__).map(|| result__)
+        }
+    }
+    pub fn MinDetectableAzimuthInDegrees(&self) -> windows_core::Result<super::super::Foundation::IReference<f64>> {
+        let this = &windows_core::Interface::cast::<IHumanPresenceSensor3>(self)?;
+        unsafe {
+            let mut result__ = core::mem::zeroed();
+            (windows_core::Interface::vtable(this).MinDetectableAzimuthInDegrees)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::Type::from_abi(result__))
+        }
+    }
+    pub fn MaxDetectableAzimuthInDegrees(&self) -> windows_core::Result<super::super::Foundation::IReference<f64>> {
+        let this = &windows_core::Interface::cast::<IHumanPresenceSensor3>(self)?;
+        unsafe {
+            let mut result__ = core::mem::zeroed();
+            (windows_core::Interface::vtable(this).MaxDetectableAzimuthInDegrees)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::Type::from_abi(result__))
+        }
+    }
+    pub fn MinDetectableAltitudeInDegrees(&self) -> windows_core::Result<super::super::Foundation::IReference<f64>> {
+        let this = &windows_core::Interface::cast::<IHumanPresenceSensor3>(self)?;
+        unsafe {
+            let mut result__ = core::mem::zeroed();
+            (windows_core::Interface::vtable(this).MinDetectableAltitudeInDegrees)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::Type::from_abi(result__))
+        }
+    }
+    pub fn MaxDetectableAltitudeInDegrees(&self) -> windows_core::Result<super::super::Foundation::IReference<f64>> {
+        let this = &windows_core::Interface::cast::<IHumanPresenceSensor3>(self)?;
+        unsafe {
+            let mut result__ = core::mem::zeroed();
+            (windows_core::Interface::vtable(this).MaxDetectableAltitudeInDegrees)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::Type::from_abi(result__))
+        }
+    }
     pub fn GetDeviceSelector() -> windows_core::Result<windows_core::HSTRING> {
         Self::IHumanPresenceSensorStatics(|this| unsafe {
             let mut result__ = core::mem::zeroed();
@@ -3586,7 +3805,7 @@ impl windows_core::RuntimeName for HumanPresenceSensor {
 unsafe impl Send for HumanPresenceSensor {}
 unsafe impl Sync for HumanPresenceSensor {}
 #[repr(transparent)]
-#[derive(PartialEq, Eq, core::fmt::Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone)]
 pub struct HumanPresenceSensorReading(windows_core::IUnknown);
 windows_core::imp::interface_hierarchy!(HumanPresenceSensorReading, windows_core::IUnknown, windows_core::IInspectable);
 impl HumanPresenceSensorReading {
@@ -3626,6 +3845,21 @@ impl HumanPresenceSensorReading {
             (windows_core::Interface::vtable(this).Properties)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::Type::from_abi(result__))
         }
     }
+    pub fn OnlookerPresence(&self) -> windows_core::Result<HumanPresence> {
+        let this = &windows_core::Interface::cast::<IHumanPresenceSensorReading3>(self)?;
+        unsafe {
+            let mut result__ = core::mem::zeroed();
+            (windows_core::Interface::vtable(this).OnlookerPresence)(windows_core::Interface::as_raw(this), &mut result__).map(|| result__)
+        }
+    }
+    #[cfg(feature = "Foundation_Collections")]
+    pub fn DetectedPersons(&self) -> windows_core::Result<super::super::Foundation::Collections::IVectorView<DetectedPerson>> {
+        let this = &windows_core::Interface::cast::<IHumanPresenceSensorReading3>(self)?;
+        unsafe {
+            let mut result__ = core::mem::zeroed();
+            (windows_core::Interface::vtable(this).DetectedPersons)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::Type::from_abi(result__))
+        }
+    }
 }
 impl windows_core::RuntimeType for HumanPresenceSensorReading {
     const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_class::<Self, IHumanPresenceSensorReading>();
@@ -3640,7 +3874,7 @@ impl windows_core::RuntimeName for HumanPresenceSensorReading {
 unsafe impl Send for HumanPresenceSensorReading {}
 unsafe impl Sync for HumanPresenceSensorReading {}
 #[repr(transparent)]
-#[derive(PartialEq, Eq, core::fmt::Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone)]
 pub struct HumanPresenceSensorReadingChangedEventArgs(windows_core::IUnknown);
 windows_core::imp::interface_hierarchy!(HumanPresenceSensorReadingChangedEventArgs, windows_core::IUnknown, windows_core::IInspectable);
 impl HumanPresenceSensorReadingChangedEventArgs {
@@ -3665,7 +3899,7 @@ impl windows_core::RuntimeName for HumanPresenceSensorReadingChangedEventArgs {
 unsafe impl Send for HumanPresenceSensorReadingChangedEventArgs {}
 unsafe impl Sync for HumanPresenceSensorReadingChangedEventArgs {}
 #[repr(transparent)]
-#[derive(PartialEq, Eq, core::fmt::Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone)]
 pub struct HumanPresenceSensorReadingUpdate(windows_core::IUnknown);
 windows_core::imp::interface_hierarchy!(HumanPresenceSensorReadingUpdate, windows_core::IUnknown, windows_core::IInspectable);
 impl HumanPresenceSensorReadingUpdate {
@@ -3746,7 +3980,7 @@ impl windows_core::RuntimeName for HumanPresenceSensorReadingUpdate {
 unsafe impl Send for HumanPresenceSensorReadingUpdate {}
 unsafe impl Sync for HumanPresenceSensorReadingUpdate {}
 #[repr(transparent)]
-#[derive(PartialEq, Eq, core::fmt::Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone)]
 pub struct HumanPresenceSettings(windows_core::IUnknown);
 windows_core::imp::interface_hierarchy!(HumanPresenceSettings, windows_core::IUnknown, windows_core::IInspectable);
 impl HumanPresenceSettings {
@@ -3944,7 +4178,7 @@ impl windows_core::RuntimeName for HumanPresenceSettings {
 unsafe impl Send for HumanPresenceSettings {}
 unsafe impl Sync for HumanPresenceSettings {}
 #[repr(transparent)]
-#[derive(PartialEq, Eq, core::fmt::Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone)]
 pub struct Inclinometer(windows_core::IUnknown);
 windows_core::imp::interface_hierarchy!(Inclinometer, windows_core::IUnknown, windows_core::IInspectable);
 impl Inclinometer {
@@ -4103,7 +4337,7 @@ impl windows_core::RuntimeName for Inclinometer {
 unsafe impl Send for Inclinometer {}
 unsafe impl Sync for Inclinometer {}
 #[repr(transparent)]
-#[derive(PartialEq, Eq, core::fmt::Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone)]
 pub struct InclinometerDataThreshold(windows_core::IUnknown);
 windows_core::imp::interface_hierarchy!(InclinometerDataThreshold, windows_core::IUnknown, windows_core::IInspectable);
 impl InclinometerDataThreshold {
@@ -4154,7 +4388,7 @@ impl windows_core::RuntimeName for InclinometerDataThreshold {
 unsafe impl Send for InclinometerDataThreshold {}
 unsafe impl Sync for InclinometerDataThreshold {}
 #[repr(transparent)]
-#[derive(PartialEq, Eq, core::fmt::Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone)]
 pub struct InclinometerReading(windows_core::IUnknown);
 windows_core::imp::interface_hierarchy!(InclinometerReading, windows_core::IUnknown, windows_core::IInspectable);
 impl InclinometerReading {
@@ -4222,7 +4456,7 @@ impl windows_core::RuntimeName for InclinometerReading {
 unsafe impl Send for InclinometerReading {}
 unsafe impl Sync for InclinometerReading {}
 #[repr(transparent)]
-#[derive(PartialEq, Eq, core::fmt::Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone)]
 pub struct InclinometerReadingChangedEventArgs(windows_core::IUnknown);
 windows_core::imp::interface_hierarchy!(InclinometerReadingChangedEventArgs, windows_core::IUnknown, windows_core::IInspectable);
 impl InclinometerReadingChangedEventArgs {
@@ -4247,7 +4481,7 @@ impl windows_core::RuntimeName for InclinometerReadingChangedEventArgs {
 unsafe impl Send for InclinometerReadingChangedEventArgs {}
 unsafe impl Sync for InclinometerReadingChangedEventArgs {}
 #[repr(transparent)]
-#[derive(PartialEq, Eq, core::fmt::Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone)]
 pub struct LightSensor(windows_core::IUnknown);
 windows_core::imp::interface_hierarchy!(LightSensor, windows_core::IUnknown, windows_core::IInspectable);
 impl LightSensor {
@@ -4364,7 +4598,7 @@ impl windows_core::RuntimeName for LightSensor {
 unsafe impl Send for LightSensor {}
 unsafe impl Sync for LightSensor {}
 #[repr(transparent)]
-#[derive(PartialEq, Eq, core::fmt::Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone)]
 pub struct LightSensorDataThreshold(windows_core::IUnknown);
 windows_core::imp::interface_hierarchy!(LightSensorDataThreshold, windows_core::IUnknown, windows_core::IInspectable);
 impl LightSensorDataThreshold {
@@ -4404,7 +4638,7 @@ impl windows_core::RuntimeName for LightSensorDataThreshold {
 unsafe impl Send for LightSensorDataThreshold {}
 unsafe impl Sync for LightSensorDataThreshold {}
 #[repr(transparent)]
-#[derive(PartialEq, Eq, core::fmt::Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone)]
 pub struct LightSensorReading(windows_core::IUnknown);
 windows_core::imp::interface_hierarchy!(LightSensorReading, windows_core::IUnknown, windows_core::IInspectable);
 impl LightSensorReading {
@@ -4451,7 +4685,7 @@ impl windows_core::RuntimeName for LightSensorReading {
 unsafe impl Send for LightSensorReading {}
 unsafe impl Sync for LightSensorReading {}
 #[repr(transparent)]
-#[derive(PartialEq, Eq, core::fmt::Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone)]
 pub struct LightSensorReadingChangedEventArgs(windows_core::IUnknown);
 windows_core::imp::interface_hierarchy!(LightSensorReadingChangedEventArgs, windows_core::IUnknown, windows_core::IInspectable);
 impl LightSensorReadingChangedEventArgs {
@@ -4476,7 +4710,7 @@ impl windows_core::RuntimeName for LightSensorReadingChangedEventArgs {
 unsafe impl Send for LightSensorReadingChangedEventArgs {}
 unsafe impl Sync for LightSensorReadingChangedEventArgs {}
 #[repr(transparent)]
-#[derive(PartialEq, Eq, core::fmt::Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone)]
 pub struct LockOnLeaveOptions(windows_core::IUnknown);
 windows_core::imp::interface_hierarchy!(LockOnLeaveOptions, windows_core::IUnknown, windows_core::IInspectable);
 impl LockOnLeaveOptions {
@@ -4505,7 +4739,7 @@ impl windows_core::RuntimeName for LockOnLeaveOptions {
 unsafe impl Send for LockOnLeaveOptions {}
 unsafe impl Sync for LockOnLeaveOptions {}
 #[repr(transparent)]
-#[derive(PartialEq, Eq, core::fmt::Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone)]
 pub struct Magnetometer(windows_core::IUnknown);
 windows_core::imp::interface_hierarchy!(Magnetometer, windows_core::IUnknown, windows_core::IInspectable);
 impl Magnetometer {
@@ -4635,7 +4869,7 @@ impl windows_core::RuntimeName for Magnetometer {
 unsafe impl Send for Magnetometer {}
 unsafe impl Sync for Magnetometer {}
 #[repr(transparent)]
-#[derive(PartialEq, Eq, core::fmt::Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone)]
 pub struct MagnetometerDataThreshold(windows_core::IUnknown);
 windows_core::imp::interface_hierarchy!(MagnetometerDataThreshold, windows_core::IUnknown, windows_core::IInspectable);
 impl MagnetometerDataThreshold {
@@ -4686,7 +4920,7 @@ impl windows_core::RuntimeName for MagnetometerDataThreshold {
 unsafe impl Send for MagnetometerDataThreshold {}
 unsafe impl Sync for MagnetometerDataThreshold {}
 #[repr(transparent)]
-#[derive(PartialEq, Eq, core::fmt::Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone)]
 pub struct MagnetometerReading(windows_core::IUnknown);
 windows_core::imp::interface_hierarchy!(MagnetometerReading, windows_core::IUnknown, windows_core::IInspectable);
 impl MagnetometerReading {
@@ -4754,7 +4988,7 @@ impl windows_core::RuntimeName for MagnetometerReading {
 unsafe impl Send for MagnetometerReading {}
 unsafe impl Sync for MagnetometerReading {}
 #[repr(transparent)]
-#[derive(PartialEq, Eq, core::fmt::Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone)]
 pub struct MagnetometerReadingChangedEventArgs(windows_core::IUnknown);
 windows_core::imp::interface_hierarchy!(MagnetometerReadingChangedEventArgs, windows_core::IUnknown, windows_core::IInspectable);
 impl MagnetometerReadingChangedEventArgs {
@@ -4779,7 +5013,7 @@ impl windows_core::RuntimeName for MagnetometerReadingChangedEventArgs {
 unsafe impl Send for MagnetometerReadingChangedEventArgs {}
 unsafe impl Sync for MagnetometerReadingChangedEventArgs {}
 #[repr(transparent)]
-#[derive(PartialEq, Eq, core::fmt::Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone)]
 pub struct OrientationSensor(windows_core::IUnknown);
 windows_core::imp::interface_hierarchy!(OrientationSensor, windows_core::IUnknown, windows_core::IInspectable);
 impl OrientationSensor {
@@ -4943,7 +5177,7 @@ impl windows_core::RuntimeName for OrientationSensor {
 unsafe impl Send for OrientationSensor {}
 unsafe impl Sync for OrientationSensor {}
 #[repr(transparent)]
-#[derive(PartialEq, Eq, core::fmt::Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone)]
 pub struct OrientationSensorReading(windows_core::IUnknown);
 windows_core::imp::interface_hierarchy!(OrientationSensorReading, windows_core::IUnknown, windows_core::IInspectable);
 impl OrientationSensorReading {
@@ -5004,7 +5238,7 @@ impl windows_core::RuntimeName for OrientationSensorReading {
 unsafe impl Send for OrientationSensorReading {}
 unsafe impl Sync for OrientationSensorReading {}
 #[repr(transparent)]
-#[derive(PartialEq, Eq, core::fmt::Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone)]
 pub struct OrientationSensorReadingChangedEventArgs(windows_core::IUnknown);
 windows_core::imp::interface_hierarchy!(OrientationSensorReadingChangedEventArgs, windows_core::IUnknown, windows_core::IInspectable);
 impl OrientationSensorReadingChangedEventArgs {
@@ -5029,7 +5263,7 @@ impl windows_core::RuntimeName for OrientationSensorReadingChangedEventArgs {
 unsafe impl Send for OrientationSensorReadingChangedEventArgs {}
 unsafe impl Sync for OrientationSensorReadingChangedEventArgs {}
 #[repr(transparent)]
-#[derive(PartialEq, Eq, core::fmt::Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone)]
 pub struct Pedometer(windows_core::IUnknown);
 windows_core::imp::interface_hierarchy!(Pedometer, windows_core::IUnknown, windows_core::IInspectable);
 impl Pedometer {
@@ -5153,7 +5387,7 @@ impl windows_core::RuntimeName for Pedometer {
 unsafe impl Send for Pedometer {}
 unsafe impl Sync for Pedometer {}
 #[repr(transparent)]
-#[derive(PartialEq, Eq, core::fmt::Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone)]
 pub struct PedometerDataThreshold(windows_core::IUnknown);
 windows_core::imp::interface_hierarchy!(PedometerDataThreshold, windows_core::IUnknown, windows_core::IInspectable);
 windows_core::imp::required_hierarchy!(PedometerDataThreshold, ISensorDataThreshold);
@@ -5186,7 +5420,7 @@ impl windows_core::RuntimeName for PedometerDataThreshold {
 unsafe impl Send for PedometerDataThreshold {}
 unsafe impl Sync for PedometerDataThreshold {}
 #[repr(transparent)]
-#[derive(PartialEq, Eq, core::fmt::Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone)]
 pub struct PedometerReading(windows_core::IUnknown);
 windows_core::imp::interface_hierarchy!(PedometerReading, windows_core::IUnknown, windows_core::IInspectable);
 impl PedometerReading {
@@ -5232,7 +5466,7 @@ impl windows_core::RuntimeName for PedometerReading {
 unsafe impl Send for PedometerReading {}
 unsafe impl Sync for PedometerReading {}
 #[repr(transparent)]
-#[derive(PartialEq, Eq, core::fmt::Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone)]
 pub struct PedometerReadingChangedEventArgs(windows_core::IUnknown);
 windows_core::imp::interface_hierarchy!(PedometerReadingChangedEventArgs, windows_core::IUnknown, windows_core::IInspectable);
 impl PedometerReadingChangedEventArgs {
@@ -5257,7 +5491,7 @@ impl windows_core::RuntimeName for PedometerReadingChangedEventArgs {
 unsafe impl Send for PedometerReadingChangedEventArgs {}
 unsafe impl Sync for PedometerReadingChangedEventArgs {}
 #[repr(transparent)]
-#[derive(PartialEq, Eq, core::fmt::Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone)]
 pub struct ProximitySensor(windows_core::IUnknown);
 windows_core::imp::interface_hierarchy!(ProximitySensor, windows_core::IUnknown, windows_core::IInspectable);
 impl ProximitySensor {
@@ -5356,7 +5590,7 @@ impl windows_core::RuntimeName for ProximitySensor {
 unsafe impl Send for ProximitySensor {}
 unsafe impl Sync for ProximitySensor {}
 #[repr(transparent)]
-#[derive(PartialEq, Eq, core::fmt::Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone)]
 pub struct ProximitySensorDataThreshold(windows_core::IUnknown);
 windows_core::imp::interface_hierarchy!(ProximitySensorDataThreshold, windows_core::IUnknown, windows_core::IInspectable);
 windows_core::imp::required_hierarchy!(ProximitySensorDataThreshold, ISensorDataThreshold);
@@ -5389,7 +5623,7 @@ impl windows_core::RuntimeName for ProximitySensorDataThreshold {
 unsafe impl Send for ProximitySensorDataThreshold {}
 unsafe impl Sync for ProximitySensorDataThreshold {}
 #[repr(transparent)]
-#[derive(PartialEq, Eq, core::fmt::Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone)]
 pub struct ProximitySensorDisplayOnOffController(windows_core::IUnknown);
 windows_core::imp::interface_hierarchy!(ProximitySensorDisplayOnOffController, windows_core::IUnknown, windows_core::IInspectable);
 windows_core::imp::required_hierarchy!(ProximitySensorDisplayOnOffController, super::super::Foundation::IClosable);
@@ -5412,7 +5646,7 @@ impl windows_core::RuntimeName for ProximitySensorDisplayOnOffController {
 unsafe impl Send for ProximitySensorDisplayOnOffController {}
 unsafe impl Sync for ProximitySensorDisplayOnOffController {}
 #[repr(transparent)]
-#[derive(PartialEq, Eq, core::fmt::Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone)]
 pub struct ProximitySensorReading(windows_core::IUnknown);
 windows_core::imp::interface_hierarchy!(ProximitySensorReading, windows_core::IUnknown, windows_core::IInspectable);
 impl ProximitySensorReading {
@@ -5451,7 +5685,7 @@ impl windows_core::RuntimeName for ProximitySensorReading {
 unsafe impl Send for ProximitySensorReading {}
 unsafe impl Sync for ProximitySensorReading {}
 #[repr(transparent)]
-#[derive(PartialEq, Eq, core::fmt::Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone)]
 pub struct ProximitySensorReadingChangedEventArgs(windows_core::IUnknown);
 windows_core::imp::interface_hierarchy!(ProximitySensorReadingChangedEventArgs, windows_core::IUnknown, windows_core::IInspectable);
 impl ProximitySensorReadingChangedEventArgs {
@@ -5476,7 +5710,7 @@ impl windows_core::RuntimeName for ProximitySensorReadingChangedEventArgs {
 unsafe impl Send for ProximitySensorReadingChangedEventArgs {}
 unsafe impl Sync for ProximitySensorReadingChangedEventArgs {}
 #[repr(transparent)]
-#[derive(PartialEq, Eq, core::fmt::Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone)]
 pub struct SensorDataThresholdTriggerDetails(windows_core::IUnknown);
 windows_core::imp::interface_hierarchy!(SensorDataThresholdTriggerDetails, windows_core::IUnknown, windows_core::IInspectable);
 impl SensorDataThresholdTriggerDetails {
@@ -5508,7 +5742,7 @@ impl windows_core::RuntimeName for SensorDataThresholdTriggerDetails {
 unsafe impl Send for SensorDataThresholdTriggerDetails {}
 unsafe impl Sync for SensorDataThresholdTriggerDetails {}
 #[repr(transparent)]
-#[derive(PartialEq, Eq, core::fmt::Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone)]
 pub struct SensorQuaternion(windows_core::IUnknown);
 windows_core::imp::interface_hierarchy!(SensorQuaternion, windows_core::IUnknown, windows_core::IInspectable);
 impl SensorQuaternion {
@@ -5554,7 +5788,7 @@ impl windows_core::RuntimeName for SensorQuaternion {
 unsafe impl Send for SensorQuaternion {}
 unsafe impl Sync for SensorQuaternion {}
 #[repr(transparent)]
-#[derive(PartialEq, Eq, core::fmt::Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone)]
 pub struct SensorRotationMatrix(windows_core::IUnknown);
 windows_core::imp::interface_hierarchy!(SensorRotationMatrix, windows_core::IUnknown, windows_core::IInspectable);
 impl SensorRotationMatrix {
@@ -5635,7 +5869,7 @@ impl windows_core::RuntimeName for SensorRotationMatrix {
 unsafe impl Send for SensorRotationMatrix {}
 unsafe impl Sync for SensorRotationMatrix {}
 #[repr(transparent)]
-#[derive(PartialEq, Eq, core::fmt::Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone)]
 pub struct SimpleOrientationSensor(windows_core::IUnknown);
 windows_core::imp::interface_hierarchy!(SimpleOrientationSensor, windows_core::IUnknown, windows_core::IInspectable);
 impl SimpleOrientationSensor {
@@ -5722,7 +5956,7 @@ impl windows_core::RuntimeName for SimpleOrientationSensor {
 unsafe impl Send for SimpleOrientationSensor {}
 unsafe impl Sync for SimpleOrientationSensor {}
 #[repr(transparent)]
-#[derive(PartialEq, Eq, core::fmt::Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone)]
 pub struct SimpleOrientationSensorOrientationChangedEventArgs(windows_core::IUnknown);
 windows_core::imp::interface_hierarchy!(SimpleOrientationSensorOrientationChangedEventArgs, windows_core::IUnknown, windows_core::IInspectable);
 impl SimpleOrientationSensorOrientationChangedEventArgs {
@@ -5754,7 +5988,7 @@ impl windows_core::RuntimeName for SimpleOrientationSensorOrientationChangedEven
 unsafe impl Send for SimpleOrientationSensorOrientationChangedEventArgs {}
 unsafe impl Sync for SimpleOrientationSensorOrientationChangedEventArgs {}
 #[repr(transparent)]
-#[derive(PartialEq, Eq, core::fmt::Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone)]
 pub struct WakeOnApproachOptions(windows_core::IUnknown);
 windows_core::imp::interface_hierarchy!(WakeOnApproachOptions, windows_core::IUnknown, windows_core::IInspectable);
 impl WakeOnApproachOptions {

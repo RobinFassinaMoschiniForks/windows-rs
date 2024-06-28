@@ -1,4 +1,5 @@
 use super::*;
+use core::ffi::c_void;
 use core::marker::PhantomData;
 use core::mem::{size_of, transmute_copy};
 use core::ptr::null_mut;
@@ -23,7 +24,11 @@ impl<T: Interface> Default for Event<T> {
 impl<T: Interface> Event<T> {
     /// Creates a new, empty `Event<T>`.
     pub fn new() -> Self {
-        Self { delegates: Array::new(), swap: Mutex::default(), change: Mutex::default() }
+        Self {
+            delegates: Array::new(),
+            swap: Mutex::default(),
+            change: Mutex::default(),
+        }
     }
 
     /// Registers a delegate with the event object.
@@ -102,7 +107,10 @@ impl<T: Interface> Event<T> {
         for delegate in lock_free_calls.as_slice() {
             if let Err(error) = delegate.call(&mut callback) {
                 const RPC_E_SERVER_UNAVAILABLE: HRESULT = HRESULT(-2147023174); // HRESULT_FROM_WIN32(RPC_S_SERVER_UNAVAILABLE)
-                if matches!(error.code(), imp::RPC_E_DISCONNECTED | imp::JSCRIPT_E_CANTEXECUTE | RPC_E_SERVER_UNAVAILABLE) {
+                if matches!(
+                    error.code(),
+                    imp::RPC_E_DISCONNECTED | imp::JSCRIPT_E_CANTEXECUTE | RPC_E_SERVER_UNAVAILABLE
+                ) {
                     self.remove(delegate.to_token())?;
                 }
             }
@@ -127,12 +135,20 @@ impl<T: Interface> Default for Array<T> {
 impl<T: Interface> Array<T> {
     /// Creates a new, empty `Array<T>` with no capacity.
     fn new() -> Self {
-        Self { buffer: null_mut(), len: 0, _phantom: PhantomData }
+        Self {
+            buffer: null_mut(),
+            len: 0,
+            _phantom: PhantomData,
+        }
     }
 
     /// Creates a new, empty `Array<T>` with the specified capacity.
     fn with_capacity(capacity: usize) -> Result<Self> {
-        Ok(Self { buffer: Buffer::new(capacity)?, len: 0, _phantom: PhantomData })
+        Ok(Self {
+            buffer: Buffer::new(capacity)?,
+            len: 0,
+            _phantom: PhantomData,
+        })
     }
 
     /// Swaps the contents of two `Array<T>` objects.
@@ -184,7 +200,11 @@ impl<T: Interface> Clone for Array<T> {
         if !self.is_empty() {
             unsafe { (*self.buffer).0.add_ref() };
         }
-        Self { buffer: self.buffer, len: self.len, _phantom: PhantomData }
+        Self {
+            buffer: self.buffer,
+            len: self.len,
+            _phantom: PhantomData,
+        }
     }
 }
 
@@ -193,7 +213,7 @@ impl<T: Interface> Drop for Array<T> {
         unsafe {
             if !self.is_empty() && (*self.buffer).0.release() == 0 {
                 core::ptr::drop_in_place(self.as_mut_slice());
-                imp::heap_free(self.buffer as _)
+                heap_free(self.buffer as _)
             }
         }
     }
@@ -211,7 +231,7 @@ impl<T: Interface> Buffer<T> {
             Ok(null_mut())
         } else {
             let alloc_size = size_of::<Self>() + len * size_of::<Delegate<T>>();
-            let header = imp::heap_alloc(alloc_size)? as *mut Self;
+            let header = heap_alloc(alloc_size)? as *mut Self;
             unsafe {
                 header.write(Self(imp::RefCount::new(1), PhantomData));
             }
@@ -265,4 +285,31 @@ impl<T: Interface> Delegate<T> {
             Self::Indirect(delegate) => callback(&delegate.resolve()?),
         }
     }
+}
+
+/// Allocate memory of size `bytes` using `malloc` - the `Event` implementation does not
+/// need to use any particular allocator so `HeapAlloc` need not be used.
+fn heap_alloc(bytes: usize) -> crate::Result<*mut c_void> {
+    let ptr: *mut c_void = unsafe {
+        extern "C" {
+            fn malloc(bytes: usize) -> *mut c_void;
+        }
+
+        malloc(bytes)
+    };
+
+    if ptr.is_null() {
+        Err(Error::from_hresult(imp::E_OUTOFMEMORY))
+    } else {
+        Ok(ptr)
+    }
+}
+
+/// Free memory allocated by `heap_alloc`.
+unsafe fn heap_free(ptr: *mut c_void) {
+    extern "C" {
+        fn free(ptr: *mut c_void);
+    }
+
+    free(ptr);
 }

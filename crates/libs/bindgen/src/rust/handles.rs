@@ -11,17 +11,10 @@ pub fn writer(writer: &Writer, def: metadata::TypeDef) -> TokenStream {
 
 pub fn gen_sys_handle(writer: &Writer, def: metadata::TypeDef) -> TokenStream {
     let ident = to_ident(def.name());
-    match def.underlying_type() {
-        metadata::Type::ISize if writer.std => quote! {
-            pub type #ident = *mut core::ffi::c_void;
-        },
-        underlying_type => {
-            let signature = writer.type_default_name(&underlying_type);
+    let signature = writer.type_default_name(&def.underlying_type());
 
-            quote! {
-                pub type #ident = #signature;
-            }
-        }
+    quote! {
+        pub type #ident = #signature;
     }
 }
 
@@ -30,7 +23,9 @@ pub fn gen_win_handle(writer: &Writer, def: metadata::TypeDef) -> TokenStream {
     let ident = to_ident(name);
     let underlying_type = def.underlying_type();
     let signature = writer.type_default_name(&underlying_type);
-    let is_invalid = if underlying_type.is_pointer() {
+    let invalid = metadata::type_def_invalid_values(def);
+
+    let is_invalid = if underlying_type.is_pointer() && (invalid.is_empty() || invalid == [0]) {
         quote! {
             impl #ident {
                 pub fn is_invalid(&self) -> bool {
@@ -38,28 +33,24 @@ pub fn gen_win_handle(writer: &Writer, def: metadata::TypeDef) -> TokenStream {
                 }
             }
         }
+    } else if invalid.is_empty() {
+        quote! {}
     } else {
-        let invalid = metadata::type_def_invalid_values(def);
+        let invalid = invalid.iter().map(|value| {
+            let literal = Literal::i64_unsuffixed(*value);
 
-        if !invalid.is_empty() {
-            let invalid = invalid.iter().map(|value| {
-                let literal = Literal::i64_unsuffixed(*value);
-
-                if *value < 0 && underlying_type.is_unsigned() {
-                    quote! { self.0 == #literal as _ }
-                } else {
-                    quote! { self.0 == #literal }
-                }
-            });
-            quote! {
-                impl #ident {
-                    pub fn is_invalid(&self) -> bool {
-                        #(#invalid)||*
-                    }
+            if underlying_type.is_pointer() || (*value < 0 && underlying_type.is_unsigned()) {
+                quote! { self.0 == #literal as _ }
+            } else {
+                quote! { self.0 == #literal }
+            }
+        });
+        quote! {
+            impl #ident {
+                pub fn is_invalid(&self) -> bool {
+                    #(#invalid)||*
                 }
             }
-        } else {
-            quote! {}
         }
     };
 
@@ -86,6 +77,7 @@ pub fn gen_win_handle(writer: &Writer, def: metadata::TypeDef) -> TokenStream {
 
             quote! {
                 impl windows_core::Free for #ident {
+                    #[inline]
                     unsafe fn free(&mut self) {
                         if !self.is_invalid() {
                             #result #name(*self #tail);
@@ -135,7 +127,10 @@ pub fn gen_win_handle(writer: &Writer, def: metadata::TypeDef) -> TokenStream {
 fn type_def_usable_for(row: metadata::TypeDef) -> Option<metadata::TypeDef> {
     if let Some(attribute) = row.find_attribute("AlsoUsableForAttribute") {
         if let Some((_, metadata::Value::String(name))) = attribute.args().first() {
-            return row.reader().get_type_def(row.namespace(), name.as_str()).next();
+            return row
+                .reader()
+                .get_type_def(row.namespace(), name.as_str())
+                .next();
         }
     }
     None
@@ -149,7 +144,11 @@ fn free_function(def: metadata::TypeDef) -> Option<metadata::MethodDef> {
         }
 
         if let Some((_, metadata::Value::String(name))) = attribute.args().first() {
-            if let Some((method, _)) = def.reader().get_method_def(def.namespace(), name.as_str()).next() {
+            if let Some((method, _)) = def
+                .reader()
+                .get_method_def(def.namespace(), name.as_str())
+                .next()
+            {
                 return Some(method);
             }
         }

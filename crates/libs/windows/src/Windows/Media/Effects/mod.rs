@@ -1,3 +1,12 @@
+windows_core::imp::define_interface!(IAcousticEchoCancellationConfiguration, IAcousticEchoCancellationConfiguration_Vtbl, 0x587e735b_175b_5177_a407_2e33bafe33a5);
+impl windows_core::RuntimeType for IAcousticEchoCancellationConfiguration {
+    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
+}
+#[repr(C)]
+pub struct IAcousticEchoCancellationConfiguration_Vtbl {
+    pub base__: windows_core::IInspectable_Vtbl,
+    pub SetEchoCancellationRenderEndpoint: unsafe extern "system" fn(*mut core::ffi::c_void, core::mem::MaybeUninit<windows_core::HSTRING>) -> windows_core::HRESULT,
+}
 windows_core::imp::define_interface!(IAudioCaptureEffectsManager, IAudioCaptureEffectsManager_Vtbl, 0x8f85c271_038d_4393_8298_540110608eef);
 impl windows_core::RuntimeType for IAudioCaptureEffectsManager {
     const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
@@ -20,6 +29,18 @@ impl windows_core::RuntimeType for IAudioEffect {
 pub struct IAudioEffect_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
     pub AudioEffectType: unsafe extern "system" fn(*mut core::ffi::c_void, *mut AudioEffectType) -> windows_core::HRESULT,
+}
+windows_core::imp::define_interface!(IAudioEffect2, IAudioEffect2_Vtbl, 0x06703cb0_757e_5757_8af0_6ba58a8b2990);
+impl windows_core::RuntimeType for IAudioEffect2 {
+    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_interface::<Self>();
+}
+#[repr(C)]
+pub struct IAudioEffect2_Vtbl {
+    pub base__: windows_core::IInspectable_Vtbl,
+    pub AcousticEchoCancellationConfiguration: unsafe extern "system" fn(*mut core::ffi::c_void, *mut *mut core::ffi::c_void) -> windows_core::HRESULT,
+    pub CanSetState: unsafe extern "system" fn(*mut core::ffi::c_void, *mut bool) -> windows_core::HRESULT,
+    pub State: unsafe extern "system" fn(*mut core::ffi::c_void, *mut AudioEffectState) -> windows_core::HRESULT,
+    pub SetState: unsafe extern "system" fn(*mut core::ffi::c_void, AudioEffectState) -> windows_core::HRESULT,
 }
 windows_core::imp::define_interface!(IAudioEffectDefinition, IAudioEffectDefinition_Vtbl, 0xe4d7f974_7d80_4f73_9089_e31c9db9c294);
 impl core::ops::Deref for IAudioEffectDefinition {
@@ -604,7 +625,29 @@ pub struct IVideoTransformSphericalProjection_Vtbl {
     SetViewOrientation: usize,
 }
 #[repr(transparent)]
-#[derive(PartialEq, Eq, core::fmt::Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone)]
+pub struct AcousticEchoCancellationConfiguration(windows_core::IUnknown);
+windows_core::imp::interface_hierarchy!(AcousticEchoCancellationConfiguration, windows_core::IUnknown, windows_core::IInspectable);
+impl AcousticEchoCancellationConfiguration {
+    pub fn SetEchoCancellationRenderEndpoint(&self, deviceid: &windows_core::HSTRING) -> windows_core::Result<()> {
+        let this = self;
+        unsafe { (windows_core::Interface::vtable(this).SetEchoCancellationRenderEndpoint)(windows_core::Interface::as_raw(this), core::mem::transmute_copy(deviceid)).ok() }
+    }
+}
+impl windows_core::RuntimeType for AcousticEchoCancellationConfiguration {
+    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::for_class::<Self, IAcousticEchoCancellationConfiguration>();
+}
+unsafe impl windows_core::Interface for AcousticEchoCancellationConfiguration {
+    type Vtable = IAcousticEchoCancellationConfiguration_Vtbl;
+    const IID: windows_core::GUID = <IAcousticEchoCancellationConfiguration as windows_core::Interface>::IID;
+}
+impl windows_core::RuntimeName for AcousticEchoCancellationConfiguration {
+    const NAME: &'static str = "Windows.Media.Effects.AcousticEchoCancellationConfiguration";
+}
+unsafe impl Send for AcousticEchoCancellationConfiguration {}
+unsafe impl Sync for AcousticEchoCancellationConfiguration {}
+#[repr(transparent)]
+#[derive(PartialEq, Eq, Debug, Clone)]
 pub struct AudioCaptureEffectsManager(windows_core::IUnknown);
 windows_core::imp::interface_hierarchy!(AudioCaptureEffectsManager, windows_core::IUnknown, windows_core::IInspectable);
 impl AudioCaptureEffectsManager {
@@ -644,7 +687,7 @@ impl windows_core::RuntimeName for AudioCaptureEffectsManager {
 unsafe impl Send for AudioCaptureEffectsManager {}
 unsafe impl Sync for AudioCaptureEffectsManager {}
 #[repr(transparent)]
-#[derive(PartialEq, Eq, core::fmt::Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone)]
 pub struct AudioEffect(windows_core::IUnknown);
 windows_core::imp::interface_hierarchy!(AudioEffect, windows_core::IUnknown, windows_core::IInspectable);
 impl AudioEffect {
@@ -654,6 +697,31 @@ impl AudioEffect {
             let mut result__ = core::mem::zeroed();
             (windows_core::Interface::vtable(this).AudioEffectType)(windows_core::Interface::as_raw(this), &mut result__).map(|| result__)
         }
+    }
+    pub fn AcousticEchoCancellationConfiguration(&self) -> windows_core::Result<AcousticEchoCancellationConfiguration> {
+        let this = &windows_core::Interface::cast::<IAudioEffect2>(self)?;
+        unsafe {
+            let mut result__ = core::mem::zeroed();
+            (windows_core::Interface::vtable(this).AcousticEchoCancellationConfiguration)(windows_core::Interface::as_raw(this), &mut result__).and_then(|| windows_core::Type::from_abi(result__))
+        }
+    }
+    pub fn CanSetState(&self) -> windows_core::Result<bool> {
+        let this = &windows_core::Interface::cast::<IAudioEffect2>(self)?;
+        unsafe {
+            let mut result__ = core::mem::zeroed();
+            (windows_core::Interface::vtable(this).CanSetState)(windows_core::Interface::as_raw(this), &mut result__).map(|| result__)
+        }
+    }
+    pub fn State(&self) -> windows_core::Result<AudioEffectState> {
+        let this = &windows_core::Interface::cast::<IAudioEffect2>(self)?;
+        unsafe {
+            let mut result__ = core::mem::zeroed();
+            (windows_core::Interface::vtable(this).State)(windows_core::Interface::as_raw(this), &mut result__).map(|| result__)
+        }
+    }
+    pub fn SetState(&self, newstate: AudioEffectState) -> windows_core::Result<()> {
+        let this = &windows_core::Interface::cast::<IAudioEffect2>(self)?;
+        unsafe { (windows_core::Interface::vtable(this).SetState)(windows_core::Interface::as_raw(this), newstate).ok() }
     }
 }
 impl windows_core::RuntimeType for AudioEffect {
@@ -669,7 +737,7 @@ impl windows_core::RuntimeName for AudioEffect {
 unsafe impl Send for AudioEffect {}
 unsafe impl Sync for AudioEffect {}
 #[repr(transparent)]
-#[derive(PartialEq, Eq, core::fmt::Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone)]
 pub struct AudioEffectDefinition(windows_core::IUnknown);
 windows_core::imp::interface_hierarchy!(AudioEffectDefinition, windows_core::IUnknown, windows_core::IInspectable);
 windows_core::imp::required_hierarchy!(AudioEffectDefinition, IAudioEffectDefinition);
@@ -763,7 +831,7 @@ impl windows_core::RuntimeName for AudioEffectsManager {
     const NAME: &'static str = "Windows.Media.Effects.AudioEffectsManager";
 }
 #[repr(transparent)]
-#[derive(PartialEq, Eq, core::fmt::Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone)]
 pub struct AudioRenderEffectsManager(windows_core::IUnknown);
 windows_core::imp::interface_hierarchy!(AudioRenderEffectsManager, windows_core::IUnknown, windows_core::IInspectable);
 impl AudioRenderEffectsManager {
@@ -824,7 +892,7 @@ impl windows_core::RuntimeName for AudioRenderEffectsManager {
 unsafe impl Send for AudioRenderEffectsManager {}
 unsafe impl Sync for AudioRenderEffectsManager {}
 #[repr(transparent)]
-#[derive(PartialEq, Eq, core::fmt::Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone)]
 pub struct CompositeVideoFrameContext(windows_core::IUnknown);
 windows_core::imp::interface_hierarchy!(CompositeVideoFrameContext, windows_core::IUnknown, windows_core::IInspectable);
 impl CompositeVideoFrameContext {
@@ -875,7 +943,7 @@ impl windows_core::RuntimeName for CompositeVideoFrameContext {
 unsafe impl Send for CompositeVideoFrameContext {}
 unsafe impl Sync for CompositeVideoFrameContext {}
 #[repr(transparent)]
-#[derive(PartialEq, Eq, core::fmt::Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone)]
 pub struct ProcessAudioFrameContext(windows_core::IUnknown);
 windows_core::imp::interface_hierarchy!(ProcessAudioFrameContext, windows_core::IUnknown, windows_core::IInspectable);
 impl ProcessAudioFrameContext {
@@ -907,7 +975,7 @@ impl windows_core::RuntimeName for ProcessAudioFrameContext {
 unsafe impl Send for ProcessAudioFrameContext {}
 unsafe impl Sync for ProcessAudioFrameContext {}
 #[repr(transparent)]
-#[derive(PartialEq, Eq, core::fmt::Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone)]
 pub struct ProcessVideoFrameContext(windows_core::IUnknown);
 windows_core::imp::interface_hierarchy!(ProcessVideoFrameContext, windows_core::IUnknown, windows_core::IInspectable);
 impl ProcessVideoFrameContext {
@@ -939,7 +1007,7 @@ impl windows_core::RuntimeName for ProcessVideoFrameContext {
 unsafe impl Send for ProcessVideoFrameContext {}
 unsafe impl Sync for ProcessVideoFrameContext {}
 #[repr(transparent)]
-#[derive(PartialEq, Eq, core::fmt::Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone)]
 pub struct SlowMotionEffectDefinition(windows_core::IUnknown);
 windows_core::imp::interface_hierarchy!(SlowMotionEffectDefinition, windows_core::IUnknown, windows_core::IInspectable);
 windows_core::imp::required_hierarchy!(SlowMotionEffectDefinition, IVideoEffectDefinition);
@@ -991,7 +1059,7 @@ impl windows_core::RuntimeName for SlowMotionEffectDefinition {
 unsafe impl Send for SlowMotionEffectDefinition {}
 unsafe impl Sync for SlowMotionEffectDefinition {}
 #[repr(transparent)]
-#[derive(PartialEq, Eq, core::fmt::Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone)]
 pub struct VideoCompositorDefinition(windows_core::IUnknown);
 windows_core::imp::interface_hierarchy!(VideoCompositorDefinition, windows_core::IUnknown, windows_core::IInspectable);
 windows_core::imp::required_hierarchy!(VideoCompositorDefinition, IVideoCompositorDefinition);
@@ -1046,7 +1114,7 @@ impl windows_core::RuntimeName for VideoCompositorDefinition {
 unsafe impl Send for VideoCompositorDefinition {}
 unsafe impl Sync for VideoCompositorDefinition {}
 #[repr(transparent)]
-#[derive(PartialEq, Eq, core::fmt::Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone)]
 pub struct VideoEffectDefinition(windows_core::IUnknown);
 windows_core::imp::interface_hierarchy!(VideoEffectDefinition, windows_core::IUnknown, windows_core::IInspectable);
 windows_core::imp::required_hierarchy!(VideoEffectDefinition, IVideoEffectDefinition);
@@ -1101,7 +1169,7 @@ impl windows_core::RuntimeName for VideoEffectDefinition {
 unsafe impl Send for VideoEffectDefinition {}
 unsafe impl Sync for VideoEffectDefinition {}
 #[repr(transparent)]
-#[derive(PartialEq, Eq, core::fmt::Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone)]
 pub struct VideoTransformEffectDefinition(windows_core::IUnknown);
 windows_core::imp::interface_hierarchy!(VideoTransformEffectDefinition, windows_core::IUnknown, windows_core::IInspectable);
 windows_core::imp::required_hierarchy!(VideoTransformEffectDefinition, IVideoEffectDefinition);
@@ -1223,7 +1291,7 @@ impl windows_core::RuntimeName for VideoTransformEffectDefinition {
 unsafe impl Send for VideoTransformEffectDefinition {}
 unsafe impl Sync for VideoTransformEffectDefinition {}
 #[repr(transparent)]
-#[derive(PartialEq, Eq, core::fmt::Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone)]
 pub struct VideoTransformSphericalProjection(windows_core::IUnknown);
 windows_core::imp::interface_hierarchy!(VideoTransformSphericalProjection, windows_core::IUnknown, windows_core::IInspectable);
 impl VideoTransformSphericalProjection {
@@ -1301,6 +1369,24 @@ impl windows_core::RuntimeName for VideoTransformSphericalProjection {
 }
 unsafe impl Send for VideoTransformSphericalProjection {}
 unsafe impl Sync for VideoTransformSphericalProjection {}
+#[repr(transparent)]
+#[derive(PartialEq, Eq, Copy, Clone, Default)]
+pub struct AudioEffectState(pub i32);
+impl AudioEffectState {
+    pub const Off: Self = Self(0i32);
+    pub const On: Self = Self(1i32);
+}
+impl windows_core::TypeKind for AudioEffectState {
+    type TypeKind = windows_core::CopyType;
+}
+impl core::fmt::Debug for AudioEffectState {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+        f.debug_tuple("AudioEffectState").field(&self.0).finish()
+    }
+}
+impl windows_core::RuntimeType for AudioEffectState {
+    const SIGNATURE: windows_core::imp::ConstBuffer = windows_core::imp::ConstBuffer::from_slice(b"enum(Windows.Media.Effects.AudioEffectState;i4)");
+}
 #[repr(transparent)]
 #[derive(PartialEq, Eq, Copy, Clone, Default)]
 pub struct AudioEffectType(pub i32);

@@ -40,15 +40,17 @@ pub struct IAutomationTextRange_Vtbl {
     pub base__: windows_core::IInspectable_Vtbl,
 }
 #[repr(transparent)]
-#[derive(PartialEq, Eq, core::fmt::Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone)]
 pub struct AutomationConnection(windows_core::IUnknown);
 windows_core::imp::interface_hierarchy!(AutomationConnection, windows_core::IUnknown, windows_core::IInspectable);
 impl AutomationConnection {
-    pub fn IsRemoteSystem(&self) -> windows_core::Result<bool> {
+    pub fn IsRemoteSystem(&self) -> bool {
         let this = self;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).IsRemoteSystem)(windows_core::Interface::as_raw(this), &mut result__).map(|| result__)
+            let hresult__ = (windows_core::Interface::vtable(this).IsRemoteSystem)(windows_core::Interface::as_raw(this), &mut result__);
+            debug_assert!(hresult__.0 == 0);
+            result__
         }
     }
     pub fn AppUserModelId(&self) -> windows_core::Result<windows_core::HSTRING> {
@@ -79,7 +81,7 @@ impl windows_core::RuntimeName for AutomationConnection {
 unsafe impl Send for AutomationConnection {}
 unsafe impl Sync for AutomationConnection {}
 #[repr(transparent)]
-#[derive(PartialEq, Eq, core::fmt::Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone)]
 pub struct AutomationConnectionBoundObject(windows_core::IUnknown);
 windows_core::imp::interface_hierarchy!(AutomationConnectionBoundObject, windows_core::IUnknown, windows_core::IInspectable);
 impl AutomationConnectionBoundObject {
@@ -104,15 +106,17 @@ impl windows_core::RuntimeName for AutomationConnectionBoundObject {
 unsafe impl Send for AutomationConnectionBoundObject {}
 unsafe impl Sync for AutomationConnectionBoundObject {}
 #[repr(transparent)]
-#[derive(PartialEq, Eq, core::fmt::Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone)]
 pub struct AutomationElement(windows_core::IUnknown);
 windows_core::imp::interface_hierarchy!(AutomationElement, windows_core::IUnknown, windows_core::IInspectable);
 impl AutomationElement {
-    pub fn IsRemoteSystem(&self) -> windows_core::Result<bool> {
+    pub fn IsRemoteSystem(&self) -> bool {
         let this = self;
         unsafe {
             let mut result__ = core::mem::zeroed();
-            (windows_core::Interface::vtable(this).IsRemoteSystem)(windows_core::Interface::as_raw(this), &mut result__).map(|| result__)
+            let hresult__ = (windows_core::Interface::vtable(this).IsRemoteSystem)(windows_core::Interface::as_raw(this), &mut result__);
+            debug_assert!(hresult__.0 == 0);
+            result__
         }
     }
     pub fn AppUserModelId(&self) -> windows_core::Result<windows_core::HSTRING> {
@@ -143,7 +147,7 @@ impl windows_core::RuntimeName for AutomationElement {
 unsafe impl Send for AutomationElement {}
 unsafe impl Sync for AutomationElement {}
 #[repr(transparent)]
-#[derive(PartialEq, Eq, core::fmt::Debug, Clone)]
+#[derive(PartialEq, Eq, Debug, Clone)]
 pub struct AutomationTextRange(windows_core::IUnknown);
 windows_core::imp::interface_hierarchy!(AutomationTextRange, windows_core::IUnknown, windows_core::IInspectable);
 impl AutomationTextRange {}

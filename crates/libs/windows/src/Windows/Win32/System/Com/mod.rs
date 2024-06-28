@@ -4887,6 +4887,7 @@ pub const CLSCTX_RESERVED4: CLSCTX = CLSCTX(512u32);
 pub const CLSCTX_RESERVED5: CLSCTX = CLSCTX(2048u32);
 pub const CLSCTX_RESERVED6: CLSCTX = CLSCTX(16777216u32);
 pub const CLSCTX_SERVER: CLSCTX = CLSCTX(21u32);
+pub const CLSID_GlobalOptions: windows_core::GUID = windows_core::GUID::from_u128(0x0000034b_0000_0000_c000_000000000046);
 pub const COINITBASE_MULTITHREADED: COINITBASE = COINITBASE(0i32);
 pub const COINIT_APARTMENTTHREADED: COINIT = COINIT(2i32);
 pub const COINIT_DISABLE_OLE1DDE: COINIT = COINIT(4i32);
@@ -6629,10 +6630,18 @@ impl Default for COSERVERINFO {
 }
 #[repr(transparent)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
-pub struct CO_DEVICE_CATALOG_COOKIE(pub isize);
+pub struct CO_DEVICE_CATALOG_COOKIE(pub *mut core::ffi::c_void);
 impl CO_DEVICE_CATALOG_COOKIE {
     pub fn is_invalid(&self) -> bool {
-        self.0 == -1 || self.0 == 0
+        self.0 == -1 as _ || self.0 == 0 as _
+    }
+}
+impl windows_core::Free for CO_DEVICE_CATALOG_COOKIE {
+    #[inline]
+    unsafe fn free(&mut self) {
+        if !self.is_invalid() {
+            _ = CoRevokeDeviceCatalog(*self);
+        }
     }
 }
 impl Default for CO_DEVICE_CATALOG_COOKIE {
@@ -6645,10 +6654,18 @@ impl windows_core::TypeKind for CO_DEVICE_CATALOG_COOKIE {
 }
 #[repr(transparent)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
-pub struct CO_MTA_USAGE_COOKIE(pub isize);
+pub struct CO_MTA_USAGE_COOKIE(pub *mut core::ffi::c_void);
 impl CO_MTA_USAGE_COOKIE {
     pub fn is_invalid(&self) -> bool {
-        self.0 == -1 || self.0 == 0
+        self.0 == -1 as _ || self.0 == 0 as _
+    }
+}
+impl windows_core::Free for CO_MTA_USAGE_COOKIE {
+    #[inline]
+    unsafe fn free(&mut self) {
+        if !self.is_invalid() {
+            _ = CoDecrementMTAUsage(*self);
+        }
     }
 }
 impl Default for CO_MTA_USAGE_COOKIE {
@@ -7095,7 +7112,12 @@ impl Default for MULTI_QI {
 }
 #[repr(transparent)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
-pub struct MachineGlobalObjectTableRegistrationToken(pub isize);
+pub struct MachineGlobalObjectTableRegistrationToken(pub *mut core::ffi::c_void);
+impl MachineGlobalObjectTableRegistrationToken {
+    pub fn is_invalid(&self) -> bool {
+        self.0.is_null()
+    }
+}
 impl Default for MachineGlobalObjectTableRegistrationToken {
     fn default() -> Self {
         unsafe { core::mem::zeroed() }
@@ -7664,58 +7686,5 @@ pub type LPEXCEPFINO_DEFERRED_FILLIN = Option<unsafe extern "system" fn(pexcepin
 pub type LPFNCANUNLOADNOW = Option<unsafe extern "system" fn() -> windows_core::HRESULT>;
 pub type LPFNGETCLASSOBJECT = Option<unsafe extern "system" fn(param0: *const windows_core::GUID, param1: *const windows_core::GUID, param2: *mut *mut core::ffi::c_void) -> windows_core::HRESULT>;
 pub type PFNCONTEXTCALL = Option<unsafe extern "system" fn(pparam: *mut ComCallData) -> windows_core::HRESULT>;
-impl From<IDispatch> for windows_core::VARIANT {
-    fn from(value: IDispatch) -> Self {
-        unsafe {
-            Self::from_raw(windows_core::imp::VARIANT {
-                Anonymous: windows_core::imp::VARIANT_0 {
-                    Anonymous: windows_core::imp::VARIANT_0_0 { vt: 9, wReserved1: 0, wReserved2: 0, wReserved3: 0, Anonymous: windows_core::imp::VARIANT_0_0_0 { pdispVal: core::mem::transmute(value) } },
-                },
-            })
-        }
-    }
-}
-
-impl From<IDispatch> for windows_core::PROPVARIANT {
-    fn from(value: IDispatch) -> Self {
-        unsafe {
-            Self::from_raw(windows_core::imp::PROPVARIANT {
-                Anonymous: windows_core::imp::PROPVARIANT_0 {
-                    Anonymous: windows_core::imp::PROPVARIANT_0_0 { vt: 9, wReserved1: 0, wReserved2: 0, wReserved3: 0, Anonymous: windows_core::imp::PROPVARIANT_0_0_0 { pdispVal: core::mem::transmute(value) } },
-                },
-            })
-        }
-    }
-}
-
-impl TryFrom<&windows_core::VARIANT> for IDispatch {
-    type Error = windows_core::Error;
-    fn try_from(from: &windows_core::VARIANT) -> windows_core::Result<Self> {
-        let from = from.as_raw();
-        unsafe {
-            if from.Anonymous.Anonymous.vt == 9 && !from.Anonymous.Anonymous.Anonymous.pdispVal.is_null() {
-                let dispatch: &IDispatch = core::mem::transmute(&from.Anonymous.Anonymous.Anonymous.pdispVal);
-                Ok(dispatch.clone())
-            } else {
-                Err(windows_core::Error::from_hresult(windows_core::imp::TYPE_E_TYPEMISMATCH))
-            }
-        }
-    }
-}
-
-impl TryFrom<&windows_core::PROPVARIANT> for IDispatch {
-    type Error = windows_core::Error;
-    fn try_from(from: &windows_core::PROPVARIANT) -> windows_core::Result<Self> {
-        let from = from.as_raw();
-        unsafe {
-            if from.Anonymous.Anonymous.vt == 9 && !from.Anonymous.Anonymous.Anonymous.pdispVal.is_null() {
-                let dispatch: &IDispatch = core::mem::transmute(&from.Anonymous.Anonymous.Anonymous.pdispVal);
-                Ok(dispatch.clone())
-            } else {
-                Err(windows_core::Error::from_hresult(windows_core::imp::TYPE_E_TYPEMISMATCH))
-            }
-        }
-    }
-}
 #[cfg(feature = "implement")]
 core::include!("impl.rs");

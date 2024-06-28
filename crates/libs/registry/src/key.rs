@@ -3,13 +3,19 @@ use core::ptr::{null, null_mut};
 
 /// A registry key.
 #[repr(transparent)]
-#[derive(Default, Debug)]
+#[derive(Debug)]
 pub struct Key(pub(crate) HKEY);
+
+impl Default for Key {
+    fn default() -> Self {
+        Self(core::ptr::null_mut())
+    }
+}
 
 impl Key {
     /// Creates a registry key. If the key already exists, the function opens it.
     pub fn create<T: AsRef<str>>(&self, path: T) -> Result<Self> {
-        let mut handle = 0;
+        let mut handle = core::ptr::null_mut();
 
         let result = unsafe {
             RegCreateKeyExW(
@@ -30,7 +36,7 @@ impl Key {
 
     /// Opens a registry key.
     pub fn open<T: AsRef<str>>(&self, path: T) -> Result<Self> {
-        let mut handle = 0;
+        let mut handle = core::ptr::null_mut();
 
         let result =
             unsafe { RegOpenKeyExW(self.0, pcwstr(path).as_ptr(), 0, KEY_READ, &mut handle) };
@@ -44,12 +50,12 @@ impl Key {
     ///
     /// This function takes ownership of the handle.
     /// The handle must be owned by the caller and safe to free with `RegCloseKey`.
-    pub unsafe fn from_raw(handle: isize) -> Self {
+    pub unsafe fn from_raw(handle: *mut core::ffi::c_void) -> Self {
         Self(handle)
     }
 
     /// Returns the underlying registry key handle.
-    pub fn as_raw(&self) -> isize {
+    pub fn as_raw(&self) -> *mut core::ffi::c_void {
         self.0
     }
 
@@ -93,6 +99,15 @@ impl Key {
     }
 
     /// Sets the name and value in the registry key.
+    pub fn set_hstring<T: AsRef<str>>(
+        &self,
+        name: T,
+        value: &windows_strings::HSTRING,
+    ) -> Result<()> {
+        unsafe { self.set_value(name, REG_SZ, value.as_ptr() as _, value.len() * 2) }
+    }
+
+    /// Sets the name and value in the registry key.
     pub fn set_multi_string<T: AsRef<str>>(&self, name: T, value: &[T]) -> Result<()> {
         let mut packed = value.iter().fold(vec![0u16; 0], |mut packed, value| {
             packed.append(&mut pcwstr(value));
@@ -107,6 +122,34 @@ impl Key {
     /// Sets the name and value in the registry key.
     pub fn set_bytes<T: AsRef<str>>(&self, name: T, value: &[u8]) -> Result<()> {
         unsafe { self.set_value(name, REG_BINARY, value.as_ptr() as _, value.len()) }
+    }
+
+    /// Gets the type for the name in the registry key.
+    pub fn get_type<T: AsRef<str>>(&self, name: T) -> Result<Type> {
+        let name = pcwstr(name);
+        let mut ty = 0;
+
+        let result = unsafe {
+            RegQueryValueExW(
+                self.0,
+                name.as_ptr(),
+                null(),
+                &mut ty,
+                null_mut(),
+                null_mut(),
+            )
+        };
+
+        win32_error(result)?;
+
+        Ok(match ty {
+            REG_DWORD => Type::U32,
+            REG_QWORD => Type::U64,
+            REG_BINARY => Type::Bytes,
+            REG_SZ | REG_EXPAND_SZ => Type::String,
+            REG_MULTI_SZ => Type::MultiString,
+            rest => Type::Unknown(rest),
+        })
     }
 
     /// Gets the value for the name in the registry key.
@@ -245,12 +288,70 @@ impl Key {
     }
 
     /// Gets the value for the name in the registry key.
-    pub fn get_bytes<T: AsRef<str>>(&self, name: T) -> Result<Vec<u8>> {
-        if let Value::Bytes(value) = self.get_value(name)? {
-            Ok(value)
-        } else {
-            Err(invalid_data())
+    pub fn get_hstring<T: AsRef<str>>(&self, name: T) -> Result<HSTRING> {
+        let name = pcwstr(name);
+        let mut ty = 0;
+        let mut len = 0;
+
+        let result = unsafe {
+            RegQueryValueExW(self.0, name.as_ptr(), null(), &mut ty, null_mut(), &mut len)
+        };
+
+        win32_error(result)?;
+
+        if !matches!(ty, REG_SZ | REG_EXPAND_SZ) {
+            return Err(invalid_data());
         }
+
+        let mut value = HStringBuilder::new(len as usize / 2)?;
+
+        let result = unsafe {
+            RegQueryValueExW(
+                self.0,
+                name.as_ptr(),
+                null(),
+                null_mut(),
+                value.as_mut_ptr() as _,
+                &mut len,
+            )
+        };
+
+        win32_error(result)?;
+        value.trim_end();
+        Ok(value.into())
+    }
+
+    /// Gets the value for the name in the registry key.
+    pub fn get_bytes<T: AsRef<str>>(&self, name: T) -> Result<Vec<u8>> {
+        let name = pcwstr(name);
+        let mut len = 0;
+
+        let result = unsafe {
+            RegQueryValueExW(
+                self.0,
+                name.as_ptr(),
+                null(),
+                null_mut(),
+                null_mut(),
+                &mut len,
+            )
+        };
+
+        win32_error(result)?;
+        let mut value = vec![0u8; len as usize];
+
+        let result = unsafe {
+            RegQueryValueExW(
+                self.0,
+                name.as_ptr(),
+                null(),
+                null_mut(),
+                value.as_mut_ptr() as _,
+                &mut len,
+            )
+        };
+
+        win32_error(result).map(|_| value)
     }
 
     /// Gets the value for the name in the registry key.

@@ -4,6 +4,10 @@ version = "0.0.0"
 edition = "2021"
 publish = false
 
+[lib]
+doc = false
+doctest = false
+
 [dependencies.windows-result]
 path = "../../libs/result"
 
@@ -12,3 +16,7 @@ path = "../../libs/targets"
 
 [dependencies]
 helpers = { package = "test_helpers", path = "../helpers" }
+static_assertions = "1.0"
+
+[lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = ['cfg(windows_slim_errors)'] }

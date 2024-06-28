@@ -37,3 +37,9 @@ path = "../../libs/registry"
 
 [dev-dependencies.windows-version]
 path = "../../libs/version"
+
+[dev-dependencies.windows-strings]
+path = "../../libs/strings"
+
+[dev-dependencies.cppwinrt]
+path = "../../libs/cppwinrt"

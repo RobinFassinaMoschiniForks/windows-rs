@@ -1,6 +1,13 @@
 use super::*;
 
-pub fn writer(writer: &Writer, def: metadata::TypeDef, kind: metadata::InterfaceKind, method: metadata::MethodDef, method_names: &mut MethodNames, virtual_names: &mut MethodNames) -> TokenStream {
+pub fn writer(
+    writer: &Writer,
+    def: metadata::TypeDef,
+    kind: metadata::InterfaceKind,
+    method: metadata::MethodDef,
+    method_names: &mut MethodNames,
+    virtual_names: &mut MethodNames,
+) -> TokenStream {
     let signature = metadata::method_def_signature(def.namespace(), method, &[]);
 
     let name = method_names.add(method);
@@ -26,7 +33,8 @@ pub fn writer(writer: &Writer, def: metadata::TypeDef, kind: metadata::Interface
             let args = writer.win32_args(&signature.params, kind);
             let params = writer.win32_params(&signature.params, kind);
             let generics = expand_generics(generics, quote!(T));
-            let where_clause = expand_where_clause(where_clause, quote!(T: windows_core::Interface));
+            let where_clause =
+                expand_where_clause(where_clause, quote!(T: windows_core::Interface));
 
             quote! {
                 #features
@@ -40,7 +48,8 @@ pub fn writer(writer: &Writer, def: metadata::TypeDef, kind: metadata::Interface
             let args = writer.win32_args(&signature.params, kind);
             let params = writer.win32_params(&signature.params, kind);
             let generics = expand_generics(generics, quote!(T));
-            let where_clause = expand_where_clause(where_clause, quote!(T: windows_core::Interface));
+            let where_clause =
+                expand_where_clause(where_clause, quote!(T: windows_core::Interface));
 
             quote! {
                 #features
@@ -125,7 +134,7 @@ pub fn writer(writer: &Writer, def: metadata::TypeDef, kind: metadata::Interface
             quote! {
                 #features
                 pub unsafe fn #name<#generics>(&self, #params) -> #return_type #where_clause {
-                    let mut result__: #return_type = core::mem::zeroed();
+                    let mut result__ = core::mem::zeroed();
                     (windows_core::Interface::vtable(self).#vname)(windows_core::Interface::as_raw(self), &mut result__, #args);
                     result__
                 }
@@ -160,37 +169,50 @@ pub fn writer(writer: &Writer, def: metadata::TypeDef, kind: metadata::Interface
 pub fn gen_upcall(writer: &Writer, sig: &metadata::Signature, inner: TokenStream) -> TokenStream {
     match sig.kind() {
         metadata::SignatureKind::ResultValue => {
-            let invoke_args = sig.params[..sig.params.len() - 1].iter().map(|param| gen_win32_invoke_arg(writer, param));
+            let invoke_args = sig.params[..sig.params.len() - 1]
+                .iter()
+                .map(|param| gen_win32_invoke_arg(writer, param));
 
             let result = writer.param_name(sig.params[sig.params.len() - 1].def);
 
             quote! {
                 match #inner(this, #(#invoke_args,)*) {
                     Ok(ok__) => {
-                        // use `core::ptr::write` since the result could be uninitialized
-                        core::ptr::write(#result, core::mem::transmute(ok__));
+                        // use `ptr::write` since the result could be uninitialized
+                        #result.write(core::mem::transmute(ok__));
                         windows_core::HRESULT(0)
                     }
                     Err(err) => err.into()
                 }
             }
         }
-        metadata::SignatureKind::Query(_) | metadata::SignatureKind::QueryOptional(_) | metadata::SignatureKind::ResultVoid => {
-            let invoke_args = sig.params.iter().map(|param| gen_win32_invoke_arg(writer, param));
+        metadata::SignatureKind::Query(_)
+        | metadata::SignatureKind::QueryOptional(_)
+        | metadata::SignatureKind::ResultVoid => {
+            let invoke_args = sig
+                .params
+                .iter()
+                .map(|param| gen_win32_invoke_arg(writer, param));
 
             quote! {
                 #inner(this, #(#invoke_args,)*).into()
             }
         }
         metadata::SignatureKind::ReturnStruct => {
-            let invoke_args = sig.params.iter().map(|param| gen_win32_invoke_arg(writer, param));
+            let invoke_args = sig
+                .params
+                .iter()
+                .map(|param| gen_win32_invoke_arg(writer, param));
 
             quote! {
                 *result__ = #inner(this, #(#invoke_args,)*)
             }
         }
         _ => {
-            let invoke_args = sig.params.iter().map(|param| gen_win32_invoke_arg(writer, param));
+            let invoke_args = sig
+                .params
+                .iter()
+                .map(|param| gen_win32_invoke_arg(writer, param));
 
             quote! {
                 #inner(this, #(#invoke_args,)*)
@@ -202,9 +224,14 @@ pub fn gen_upcall(writer: &Writer, sig: &metadata::Signature, inner: TokenStream
 fn gen_win32_invoke_arg(writer: &Writer, param: &metadata::SignatureParam) -> TokenStream {
     let name = writer.param_name(param.def);
 
-    if param.def.flags().contains(metadata::ParamAttributes::In) && metadata::type_is_nullable(&param.ty) {
+    if param.def.flags().contains(metadata::ParamAttributes::In)
+        && metadata::type_is_nullable(&param.ty)
+    {
         quote! { windows_core::from_raw_borrowed(&#name) }
-    } else if (!param.ty.is_pointer() && metadata::type_is_nullable(&param.ty)) || (param.def.flags().contains(metadata::ParamAttributes::In) && !metadata::type_is_primitive(&param.ty)) {
+    } else if (!param.ty.is_pointer() && metadata::type_is_nullable(&param.ty))
+        || (param.def.flags().contains(metadata::ParamAttributes::In)
+            && !metadata::type_is_primitive(&param.ty))
+    {
         quote! { core::mem::transmute(&#name) }
     } else {
         quote! { core::mem::transmute_copy(&#name) }

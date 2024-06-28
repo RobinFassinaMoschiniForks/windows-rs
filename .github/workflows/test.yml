@@ -13,7 +13,7 @@ env:
 
 jobs:
   check:
-    runs-on: windows-2019
+    runs-on: windows-2022
 
     strategy:
       matrix:
@@ -56,6 +56,8 @@ jobs:
         uses: ./.github/actions/fix-environment
       - name: Clean
         run:  cargo clean
+      - name: Test cppwinrt
+        run:  cargo test -p cppwinrt --target ${{ matrix.target }} ${{ matrix.etc }}
       - name: Test no_std
         run:  cargo test -p no_std --target ${{ matrix.target }} ${{ matrix.etc }}
       - name: Test riddle
@@ -74,6 +76,8 @@ jobs:
         run:  cargo test -p sample_component_json_validator_winrt --target ${{ matrix.target }} ${{ matrix.etc }}
       - name: Test sample_component_json_validator_winrt_client
         run:  cargo test -p sample_component_json_validator_winrt_client --target ${{ matrix.target }} ${{ matrix.etc }}
+      - name: Test sample_component_json_validator_winrt_client_cpp
+        run:  cargo test -p sample_component_json_validator_winrt_client_cpp --target ${{ matrix.target }} ${{ matrix.etc }}
       - name: Test sample_consent
         run:  cargo test -p sample_consent --target ${{ matrix.target }} ${{ matrix.etc }}
       - name: Test sample_core_app
@@ -152,12 +156,12 @@ jobs:
         run:  cargo test -p test_alternate_success_code --target ${{ matrix.target }} ${{ matrix.etc }}
       - name: Test test_arch
         run:  cargo test -p test_arch --target ${{ matrix.target }} ${{ matrix.etc }}
+      - name: Clean
+        run:  cargo clean
       - name: Test test_arch_feature
         run:  cargo test -p test_arch_feature --target ${{ matrix.target }} ${{ matrix.etc }}
       - name: Test test_array
         run:  cargo test -p test_array --target ${{ matrix.target }} ${{ matrix.etc }}
-      - name: Clean
-        run:  cargo clean
       - name: Test test_bcrypt
         run:  cargo test -p test_bcrypt --target ${{ matrix.target }} ${{ matrix.etc }}
       - name: Test test_bstr
@@ -182,8 +186,6 @@ jobs:
         run:  cargo test -p test_core --target ${{ matrix.target }} ${{ matrix.etc }}
       - name: Test test_debug
         run:  cargo test -p test_debug --target ${{ matrix.target }} ${{ matrix.etc }}
-      - name: Test test_debug_inspectable
-        run:  cargo test -p test_debug_inspectable --target ${{ matrix.target }} ${{ matrix.etc }}
       - name: Test test_debugger_visualizer
         run:  cargo test -p test_debugger_visualizer --target ${{ matrix.target }} ${{ matrix.etc }}
       - name: Test test_deprecated
@@ -230,6 +232,8 @@ jobs:
         run:  cargo test -p test_msrv --target ${{ matrix.target }} ${{ matrix.etc }}
       - name: Test test_no_use
         run:  cargo test -p test_no_use --target ${{ matrix.target }} ${{ matrix.etc }}
+      - name: Test test_noexcept
+        run:  cargo test -p test_noexcept --target ${{ matrix.target }} ${{ matrix.etc }}
       - name: Test test_not_dll
         run:  cargo test -p test_not_dll --target ${{ matrix.target }} ${{ matrix.etc }}
       - name: Test test_query_signature
@@ -254,12 +258,14 @@ jobs:
         run:  cargo test -p test_standalone --target ${{ matrix.target }} ${{ matrix.etc }}
       - name: Test test_string_param
         run:  cargo test -p test_string_param --target ${{ matrix.target }} ${{ matrix.etc }}
+      - name: Clean
+        run:  cargo clean
+      - name: Test test_strings
+        run:  cargo test -p test_strings --target ${{ matrix.target }} ${{ matrix.etc }}
       - name: Test test_structs
         run:  cargo test -p test_structs --target ${{ matrix.target }} ${{ matrix.etc }}
       - name: Test test_sys
         run:  cargo test -p test_sys --target ${{ matrix.target }} ${{ matrix.etc }}
-      - name: Clean
-        run:  cargo clean
       - name: Test test_targets
         run:  cargo test -p test_targets --target ${{ matrix.target }} ${{ matrix.etc }}
       - name: Test test_unions
@@ -280,20 +286,18 @@ jobs:
         run:  cargo test -p test_window_long --target ${{ matrix.target }} ${{ matrix.etc }}
       - name: Test test_winrt
         run:  cargo test -p test_winrt --target ${{ matrix.target }} ${{ matrix.etc }}
+      - name: Test tool_bindings
+        run:  cargo test -p tool_bindings --target ${{ matrix.target }} ${{ matrix.etc }}
       - name: Test tool_gnu
         run:  cargo test -p tool_gnu --target ${{ matrix.target }} ${{ matrix.etc }}
       - name: Test tool_lib
         run:  cargo test -p tool_lib --target ${{ matrix.target }} ${{ matrix.etc }}
       - name: Test tool_license
         run:  cargo test -p tool_license --target ${{ matrix.target }} ${{ matrix.etc }}
-      - name: Test tool_metadata
-        run:  cargo test -p tool_metadata --target ${{ matrix.target }} ${{ matrix.etc }}
       - name: Test tool_msvc
         run:  cargo test -p tool_msvc --target ${{ matrix.target }} ${{ matrix.etc }}
-      - name: Test tool_sys
-        run:  cargo test -p tool_sys --target ${{ matrix.target }} ${{ matrix.etc }}
-      - name: Test tool_windows
-        run:  cargo test -p tool_windows --target ${{ matrix.target }} ${{ matrix.etc }}
+      - name: Test tool_standalone
+        run:  cargo test -p tool_standalone --target ${{ matrix.target }} ${{ matrix.etc }}
       - name: Test tool_yml
         run:  cargo test -p tool_yml --target ${{ matrix.target }} ${{ matrix.etc }}
       - name: Test windows
@@ -312,6 +316,8 @@ jobs:
         run:  cargo test -p windows-registry --target ${{ matrix.target }} ${{ matrix.etc }}
       - name: Test windows-result
         run:  cargo test -p windows-result --target ${{ matrix.target }} ${{ matrix.etc }}
+      - name: Test windows-strings
+        run:  cargo test -p windows-strings --target ${{ matrix.target }} ${{ matrix.etc }}
       - name: Test windows-sys
         run:  cargo test -p windows-sys --target ${{ matrix.target }} ${{ matrix.etc }}
       - name: Test windows-targets

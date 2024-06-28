@@ -13,7 +13,7 @@ env:
 
 jobs:
   check:
-    runs-on: windows-2019
+    runs-on: windows-2022
 
     strategy:
       matrix:
@@ -32,6 +32,8 @@ jobs:
         run: rustup component add clippy
       - name: Fix environment
         uses: ./.github/actions/fix-environment
+      - name: Clippy cppwinrt
+        run:  cargo clippy -p cppwinrt
       - name: Clippy no_std
         run:  cargo clippy -p no_std
       - name: Clippy riddle
@@ -50,6 +52,8 @@ jobs:
         run:  cargo clippy -p sample_component_json_validator_winrt
       - name: Clippy sample_component_json_validator_winrt_client
         run:  cargo clippy -p sample_component_json_validator_winrt_client
+      - name: Clippy sample_component_json_validator_winrt_client_cpp
+        run:  cargo clippy -p sample_component_json_validator_winrt_client_cpp
       - name: Clippy sample_consent
         run:  cargo clippy -p sample_consent
       - name: Clippy sample_core_app
@@ -156,8 +160,6 @@ jobs:
         run:  cargo clippy -p test_core
       - name: Clippy test_debug
         run:  cargo clippy -p test_debug
-      - name: Clippy test_debug_inspectable
-        run:  cargo clippy -p test_debug_inspectable
       - name: Clippy test_debugger_visualizer
         run:  cargo clippy -p test_debugger_visualizer
       - name: Clippy test_deprecated
@@ -204,6 +206,8 @@ jobs:
         run:  cargo clippy -p test_msrv
       - name: Clippy test_no_use
         run:  cargo clippy -p test_no_use
+      - name: Clippy test_noexcept
+        run:  cargo clippy -p test_noexcept
       - name: Clippy test_not_dll
         run:  cargo clippy -p test_not_dll
       - name: Clippy test_query_signature
@@ -228,6 +232,8 @@ jobs:
         run:  cargo clippy -p test_standalone
       - name: Clippy test_string_param
         run:  cargo clippy -p test_string_param
+      - name: Clippy test_strings
+        run:  cargo clippy -p test_strings
       - name: Clippy test_structs
         run:  cargo clippy -p test_structs
       - name: Clippy test_sys
@@ -252,20 +258,18 @@ jobs:
         run:  cargo clippy -p test_window_long
       - name: Clippy test_winrt
         run:  cargo clippy -p test_winrt
+      - name: Clippy tool_bindings
+        run:  cargo clippy -p tool_bindings
       - name: Clippy tool_gnu
         run:  cargo clippy -p tool_gnu
       - name: Clippy tool_lib
         run:  cargo clippy -p tool_lib
       - name: Clippy tool_license
         run:  cargo clippy -p tool_license
-      - name: Clippy tool_metadata
-        run:  cargo clippy -p tool_metadata
       - name: Clippy tool_msvc
         run:  cargo clippy -p tool_msvc
-      - name: Clippy tool_sys
-        run:  cargo clippy -p tool_sys
-      - name: Clippy tool_windows
-        run:  cargo clippy -p tool_windows
+      - name: Clippy tool_standalone
+        run:  cargo clippy -p tool_standalone
       - name: Clippy tool_yml
         run:  cargo clippy -p tool_yml
       - name: Clippy windows
@@ -284,6 +288,8 @@ jobs:
         run:  cargo clippy -p windows-registry
       - name: Clippy windows-result
         run:  cargo clippy -p windows-result
+      - name: Clippy windows-strings
+        run:  cargo clippy -p windows-strings
       - name: Clippy windows-sys
         run:  cargo clippy -p windows-sys
       - name: Clippy windows-targets

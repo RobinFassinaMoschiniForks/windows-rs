@@ -2,7 +2,8 @@
 Learn more about Rust for Windows here: <https://github.com/microsoft/windows-rs>
 */
 
-#![cfg_attr(not(test), no_std)]
+#![cfg(windows)]
+#![no_std]
 
 #[macro_use]
 extern crate alloc;
@@ -24,8 +25,14 @@ pub use key_iterator::KeyIterator;
 mod value_iterator;
 pub use value_iterator::ValueIterator;
 
+mod r#type;
+pub use r#type::Type;
+
 pub use windows_result::Result;
 use windows_result::*;
+
+pub use windows_strings::HSTRING;
+use windows_strings::*;
 
 /// The predefined `HKEY_CLASSES_ROOT` registry key.
 pub const CLASSES_ROOT: &Key = &Key(HKEY_CLASSES_ROOT);

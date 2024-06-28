@@ -1,7 +1,7 @@
 
 [package]
 name = "windows"
-version = "0.56.0"
+version = "0.57.0"
 authors = ["Microsoft"]
 edition = "2021"
 rust-version = "1.70"
@@ -13,6 +13,11 @@ readme = "readme.md"
 categories = ["os::windows-apis"]
 exclude = ["features.json"]
 
+[lib]
+# This crate does not contain tests. All tests are in separate crates.
+test = false
+doctest = false
+
 [lints]
 workspace = true
 
@@ -22,7 +27,7 @@ targets = []
 rustdoc-args = ["--cfg", "docsrs"]
 
 [dependencies]
-windows-core = { path = "../core", version = "0.56.0" }
+windows-core = { path = "../core", version = "0.57.0" }
 windows-targets = { path = "../targets", version = "0.52.5" }
 
 [features]
@@ -62,6 +67,7 @@ ApplicationModel_ExtendedExecution = ["ApplicationModel"]
 ApplicationModel_ExtendedExecution_Foreground = ["ApplicationModel_ExtendedExecution"]
 ApplicationModel_Holographic = ["ApplicationModel"]
 ApplicationModel_LockScreen = ["ApplicationModel"]
+ApplicationModel_PackageExtensions = ["ApplicationModel"]
 ApplicationModel_Payments = ["ApplicationModel"]
 ApplicationModel_Payments_Provider = ["ApplicationModel_Payments"]
 ApplicationModel_Preview = ["ApplicationModel"]
@@ -183,6 +189,7 @@ Management_Core = ["Management"]
 Management_Deployment = ["Management"]
 Management_Deployment_Preview = ["Management_Deployment"]
 Management_Policies = ["Management"]
+Management_Setup = ["Management"]
 Management_Update = ["Management"]
 Management_Workplace = ["Management"]
 Media = ["Foundation"]
@@ -358,6 +365,7 @@ UI_WindowManagement = ["UI"]
 UI_WindowManagement_Preview = ["UI_WindowManagement"]
 Wdk = ["Win32_Foundation"]
 Wdk_Devices = ["Wdk"]
+Wdk_Devices_Bluetooth = ["Wdk_Devices"]
 Wdk_Devices_HumanInterfaceDevice = ["Wdk_Devices"]
 Wdk_Foundation = ["Wdk"]
 Wdk_Graphics = ["Wdk"]
@@ -370,6 +378,7 @@ Wdk_Storage_FileSystem = ["Wdk_Storage"]
 Wdk_Storage_FileSystem_Minifilters = ["Wdk_Storage_FileSystem"]
 Wdk_System = ["Wdk"]
 Wdk_System_IO = ["Wdk_System"]
+Wdk_System_Memory = ["Wdk_System"]
 Wdk_System_OfflineRegistry = ["Wdk_System"]
 Wdk_System_Registry = ["Wdk_System"]
 Wdk_System_SystemInformation = ["Wdk_System"]
